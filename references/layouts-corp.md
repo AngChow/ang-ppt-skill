@@ -81,23 +81,29 @@
 
 ---
 
-## 13 个版式速查
+## 16 个版式速查
 
-| ID | 名称 | data-animate | 用途 |
-|---|---|---|---|
-| C01 | 封面 hero | `hero` | 品牌封面 / 产品 hero |
-| C02 | 章节封 | `chapter` | 大章节分隔 |
-| C03 | 议程目录 | `agenda` | 6 行章节列表 |
-| C04 | 大数字 KPI | `kpi-tower` | 单核心 KPI + case study |
-| C05 | 三段 KPI | `kpi-triple` | 横向并排 3 数据 |
-| C06 | 时间轴 | `timeline` | 公司/客户上线流程 |
-| C07 | 4 卡片矩阵 | `cards-2x2` | 4 模块/能力 |
-| C08 | 图文左右 | `split-reveal` | 文字+产品截图 |
-| C09 | 大图全屏 | `image-hero` | 客户故事 / 团队照 |
-| C10 | 引言金句 | `quote` | 客户证言 / 高管引言 |
-| C11 | 数据对比表 | `compare` | 3 方案对比 |
-| C12 | 团队介绍 | `team` | 3-4 人卡片 |
-| C13 | 结束页 | `hero` | Thank You / 联系方式 |
+| ID | 名称 | data-animate | 用途 | 场景偏向 |
+|---|---|---|---|---|
+| C01 | 封面 hero | `hero` | 品牌封面 / 产品 hero | 通用 |
+| C02 | 章节封 | `chapter` | 大章节分隔 | 通用 |
+| C03 | 议程目录 | `agenda` | 6 行章节列表 | 通用 |
+| C04 | 大数字 KPI | `kpi-tower` | 单核心 KPI + case study | 通用 |
+| C05 | 三段 KPI | `kpi-triple` | 横向并排 3 数据 | 通用 |
+| C06 | 时间轴 | `timeline` | 公司/客户上线流程 | 通用 |
+| C07 | 4 卡片矩阵 | `cards-2x2` | 4 模块/能力（重展览） | 提案偏多 |
+| C08 | 图文左右 | `split-reveal` | 文字+产品截图 | 提案 |
+| C09 | 大图全屏 | `image-hero` | 客户故事 / 团队照 | 提案 |
+| C10 | 引言金句 | `quote` | 客户证言 / 高管引言 | 提案 |
+| C11 | 数据对比表 | `compare` | 3 方案对比 | 通用 |
+| C12 | 团队介绍 | `team` | 3-4 人卡片 | 提案 |
+| **C14** | **纯文字主张** | **`statement`** | **巨标 + accent rule + 要点 / 引言** | **周报 / 复盘 / 内部同步** |
+| **C15** | **成果 / 瓶颈对照** | **`status-duo`** | **DONE 左 vs NEXT 右, 无图** | **周报 / 月报 / 复盘** |
+| **C16** | **要点墙 (3 列)** | **`bullet-manifest`** | **6 项纯文字要点, 顶部 hairline** | **周报 / 待办 / 复盘亮点** |
+| C13 | 结束页 | `hero` | Thank You / 联系方式 | 通用 |
+
+> **场景偏向说明**: C08 / C09 / C10 / C12 是为"对外讲故事的销售提案"设计的（需要图、客户证言、团队介绍）。
+> 做**周报、月报、复盘、团队同步**这类"对内同步进展"的 deck 时，优先使用 **C14 / C15 / C16**——它们是低图密度、高文字密度的版式，避免出现"为了用版式而塞图占位"的尴尬。
 
 ---
 
@@ -325,6 +331,233 @@
 **头像替换**（2026-06 更新）：现在默认用 `.t-avatar-N` 几何形状（通过 `clip-path`），不再用圆+首字母。生产如需真实照片直接用 `<img class="t-avatar" src="...">` 覆盖即可。
 
 ---
+
+
+
+## C14 · 纯文字主张 / Statement
+
+**用途**：周报核心结论、复盘洞察、阶段性表态、产品 manifesto。整页**无图、无 KPI 大字、无卡片矩阵**，只用排版和留白说话。
+
+**两个变体**：
+
+### 变体 A · dense（默认 · 周报 / 复盘高频）
+
+巨标题 + accent 横线 + 3-4 条带数据强调的要点。
+
+```html
+<section class="slide light" data-layout="C14" data-animate="statement">
+  <div class="qjyd-statement dense">
+    <div class="st-kicker" data-anim>STATEMENT · 阶段性结论</div>
+    <h1 class="st-display" data-anim>
+      机器多承担一点，<br>
+      <span class="accent-line">人工才有空间创造</span>。
+    </h1>
+    <div class="st-rule" data-anim></div>
+    <ul class="st-points" data-anim>
+      <li>智齿独立承接率达 <b>93%</b> · 创 Q2 单周新高</li>
+      <li>人工工时人效 <b>93.97%</b> · 时间进度 79.12%</li>
+      <li>知识自沉淀 3.0 上线 · <b>85%</b> 可直接入库</li>
+      <li>下一步 · 把客服助手与小薪 / 知识库联动起来</li>
+    </ul>
+    <div class="st-meta" data-anim>
+      <span><b>WEEKLY · 2026.06.12</b></span>
+      <span>客户服务部 · 内部同步</span>
+    </div>
+  </div>
+  <div class="qjyd-foot">...</div>
+</section>
+```
+
+### 变体 B · sparse（manifesto / 表态）
+
+巨标 + accent 横线 + 一段引言（用 `<em>` 包关键短语，自动加 accent 高亮）。
+
+```html
+<section class="slide light" data-layout="C14" data-animate="statement">
+  <div class="qjyd-statement sparse">
+    <div class="st-kicker" data-anim>POSITION · 我们怎么看</div>
+    <h1 class="st-display" data-anim>
+      客服的下一个十年，<br>
+      <span class="accent-line">不是更多坐席</span>。
+    </h1>
+    <div class="st-rule" data-anim></div>
+    <p class="st-lede" data-anim>
+      我们认为，客服效率的拐点不在话务量，<br>
+      而在 <em>机器与知识的耦合密度</em>。
+      智齿独立承接率每提升一个百分点，
+      意味着<em>一线坐席</em>能多出一份精力，
+      把 <em>沉淀的问题</em> 变成 <em>沉淀的知识</em>。
+    </p>
+    <div class="st-meta" data-anim>
+      <span><b>2026 Q2</b></span>
+      <span>客户服务 · 战略备忘录</span>
+    </div>
+  </div>
+  <div class="qjyd-foot">...</div>
+</section>
+```
+
+**关键设计**：
+
+- 巨标 `font-size: clamp(64px, 6.4vw, 124px)`、weight 700、line-height 0.98——视觉锚点
+- `<span class="accent-line">` 用渐变文字色（120deg #00D4B5 → #00897B），不是背景色块
+- `.st-rule` 是 96×5 的实色 accent 横线，作为标题与下方内容的视觉分隔，**同时是动效中"横向拉伸"的载体**
+- dense 的 `<b>` 自动用无衬线 + accent-dark + weight 700——数字强调用
+- sparse 的 `<em>` 自动用 65% 高度的 accent 透明块作背景（像荧光笔），**font-style 仍是 normal**
+
+**适用与不适用**：
+
+| ✅ 适用 | ❌ 不适用 |
+|---|---|
+| 周报关键结论"这周做成了 X" | 客户证言（用 C10） |
+| 复盘洞察"我们意识到 Y" | 多个并列模块的展示（用 C07） |
+| 阶段性表态"接下来要 Z" | 数字密集的 KPI 展示（用 C04 / C05） |
+| 战略备忘录、产品 manifesto | 流程 / 时间线（用 C06） |
+
+**常见错误**：
+
+1. ❌ 巨标超过 24 个中文字符——会被 `max-width: 24ch` 强行换多行，节奏崩溃。**先改文案**，再调字号
+2. ❌ dense 的 bullet 超过 4 条——网格是 2 列，5 条以上会导致最后一行只有 1 条孤儿
+3. ❌ sparse 的引言超过 3 行——超出会顶到 `.st-meta`，应该改用 dense 拆成 bullet
+4. ❌ 同一份 deck 出现两页 C14——statement 是稀缺资源，太多就稀释了"我有重要论断"的语义
+
+
+## C15 · 成果 / 瓶颈对照 / Status Duo
+
+**用途**：左栏"DONE / 本周成果"，右栏"NEXT / 待打通"。两栏 1:1 等宽，中间 hairline 分隔，**整页无图**。
+
+**核心设计原则**：
+
+- **左 = accent 海洋青（成果） · 右 = 中性灰（瓶颈/下一步）**
+- ❌ 不要用红色给"瓶颈"上色——会变成"出问题告警"，但实际"瓶颈"绝大多数是中性的"下一步"
+- DONE 用 accent 实心方点 ●（带 4px 光晕）/ NEXT 用空心圆环 ○
+
+**完整骨架**：
+
+```html
+<section class="slide light" data-layout="C15" data-animate="status-duo">
+  <div style="display:flex;flex-direction:column;gap:var(--sp-4);margin-bottom:var(--sp-7)" data-anim>
+    <div class="qjyd-meta">PROGRESS · 知识自沉淀 3.0</div>
+    <h1 class="qjyd-h1">本周成果与下一步</h1>
+  </div>
+  <div class="qjyd-status-duo">
+    <div class="sd-col done">
+      <div class="sd-tag"><span class="sd-mark"></span>DONE · 本周成果</div>
+      <div class="sd-title">3.0 优化完成<br>本周正式启用</div>
+      <ul class="sd-points">
+        <li><b>85%</b> · 沉淀可直接入库知识占比</li>
+        <li><b>100%</b> · 待人工审核分类准确率</li>
+        <li>本周起进入正式运营周期</li>
+        <li>话后批量沉淀已稳定运行</li>
+      </ul>
+    </div>
+    <div class="sd-rule"></div>
+    <div class="sd-col next">
+      <div class="sd-tag"><span class="sd-mark"></span>NEXT · 待打通</div>
+      <div class="sd-title">知识全自动入库<br>仍差最后一环</div>
+      <ul class="sd-points">
+        <li>低代码平台知识库接口尚未开放</li>
+        <li>当前依赖 <b>手动上传</b> 完成同步</li>
+        <li>待开放接口后即可全自动化</li>
+        <li>计划与平台侧本月内对齐方案</li>
+      </ul>
+      <div class="sd-foot">瓶颈不在自沉淀质量, 而在与下游知识库的连接通道。</div>
+    </div>
+  </div>
+  <div class="qjyd-foot">...</div>
+</section>
+```
+
+**容量规则**：
+
+- `.sd-title` 副标，最多 2 行（用 `<br>` 主动换行控制节奏）
+- `.sd-points` 每栏 3-4 条最稳定；超过 5 条会顶到 sd-foot 或溢出
+- `.sd-foot` 是**右栏专属**的小结句（出现在瓶颈下方，给一句"瓶颈本质是什么"的总结）；左栏 done 不需要 sd-foot
+
+**适用与不适用**：
+
+| ✅ 适用 | ❌ 不适用 |
+|---|---|
+| 周报"本周做了 vs 下周做" | 三方对比（用 C11） |
+| 复盘"亮点 vs 不足" | 历史路径（用 C06 timeline） |
+| 项目"已交付 vs 待交付" | 数字大字报（用 C04） |
+| 技术债"已解决 vs 待解决" | 三栏并列概念（用 C11） |
+
+**常见错误**：
+
+1. ❌ 用红色给 NEXT 栏上色——告警语义太重。中性灰才是 qjyd-corp 的"下一步"色
+2. ❌ 左右栏内容数量差距过大（左 2 条 vs 右 6 条）——视觉失衡。如果素材天然不平衡，**改用 C14 dense + 一段说明**，而不是硬塞成 duo
+3. ❌ 给 `.qjyd-status-duo` 加 `align-items: stretch`——左右栏会被强制等高，sd-points 短的那栏中间会出现大段留白。**保持 `align-items: start`**（模板默认值）
+4. ❌ 给 `.sd-foot` 加 `margin-top: auto`——会把 sd-foot 推到页面底部，但左栏没有 sd-foot 时双栏不对称。**保持紧跟 sd-points 之后**
+
+
+
+## C16 · 要点墙 (3 列) / Bullet Manifest
+
+**用途**：纯文字要点列表，3 列网格，最常用 6 项；4-9 项均可。**比 C07 卡片矩阵轻 70%**——无卡片框、无 chip、无图标，靠顶部 hairline 分隔每项。
+
+**何时用 C16 而不是 C07**：
+
+| 场景 | C07 cards-2x2 | C16 bullet-manifest |
+|---|---|---|
+| 4 大产品模块（重展览） | ✅ | ❌ |
+| 本周做了 6 件事 | ❌（信息密度低，卡片显空） | ✅ |
+| 复盘 5 个亮点 | ❌ | ✅ |
+| 待办清单 | ❌ | ✅ |
+| 4 大能力对外宣讲 | ✅ | ❌ |
+
+**完整骨架**：
+
+```html
+<section class="slide light" data-layout="C16" data-animate="bullet-manifest">
+  <div style="display:flex;flex-direction:column;gap:var(--sp-4);margin-bottom:var(--sp-8)" data-anim>
+    <div class="qjyd-meta">THIS WEEK · 本周完成</div>
+    <h1 class="qjyd-h1">六件事，一周交付</h1>
+  </div>
+  <div class="qjyd-bullet-manifest">
+    <div class="bm-item">
+      <div class="bm-num">01</div>
+      <div class="bm-title">智齿机器人提效</div>
+      <div class="bm-desc">独立承接率 <b>93%</b>, chat 有效回答 <b>19,714</b> 条</div>
+      <span class="bm-tag">已完成</span>
+    </div>
+    <!-- ... 02 ~ 05 同结构 ... -->
+    <div class="bm-item accent">
+      <div class="bm-num">04</div>
+      <div class="bm-title">知识自沉淀 3.0 启用</div>
+      <div class="bm-desc">85% 可入库, 100% 审核准确, 本周正式上线</div>
+      <span class="bm-tag">本周里程碑</span>
+    </div>
+    <!-- ... 06 ... -->
+  </div>
+  <div class="qjyd-foot">...</div>
+</section>
+```
+
+**关键设计**：
+
+- 每项是**顶部 2px 实色 hairline + 编号 + 标题 + 描述 + 状态 tag**
+- 默认线色 `var(--line)` 中性灰；加 `.bm-item.accent` 让顶部线变 accent 色 + 编号变 accent-dark + tag 变绿底——**全 deck 至多 1-2 项加 accent**，否则失去强调意义
+- `.bm-num` weight 300 偏淡，不抢标题；只有 accent 项才升到 weight 500
+- `.bm-desc` 里 `<b>` 自动用无衬线 + accent-dark + weight 700——数字强调
+
+**容量规则**：
+
+| 项数 | 视觉 | 推荐场景 |
+|---|---|---|
+| 4 项 | 一行 3 + 一行 1（孤儿）—— ❌ 不推荐 | 改用 2×2 grid 或 C07 |
+| 5 项 | 一行 3 + 一行 2 —— △ 可接受 | 周报亮点 5 项 |
+| **6 项** | **2 行 ×3 列 —— ✅ 最稳** | **周报标准款** |
+| 9 项 | 3 行 ×3 列 —— ✅ 满版 | 大型 review |
+| 10+ 项 | ❌ 拥挤 | 拆成两页 |
+
+**常见错误**：
+
+1. ❌ 把每项都加 `.bm-item.accent`——失去强调意义。**全 deck 至多 1-2 项 accent**
+2. ❌ `.bm-desc` 写成 3 行以上——单元变高，整体网格不对齐。每项描述控制在 1-2 行
+3. ❌ `.bm-tag` 写成长句——tag 是状态标签（"已完成 / 推进中 / 阻塞"），不是描述。3-5 字最合适
+4. ❌ 用 C16 替代 C07 做产品模块展示——C16 没有图标、没有 chip，对"对外宣讲产品能力"没有视觉冲击力。**C16 是对内同步用的**
+
 
 ## C13 · 结束页 Thank You
 
@@ -602,3 +835,93 @@ AI 在"用户没提供图"的情况下做了**第三条路径**:
 ### 红线
 - **AI 不要做"语义关联"判断**——再相关也不能复用模板演示图,因为图里的具体细节肯定对不上用户场景。
 - **新增模板演示图时务必用 `c{页号}-{语义}` 命名**——这样 AI 看名字就知道"这是演示图,不要碰"。如果未来某张图想做成"通用素材库",请放到不同子目录(比如 `assets/qjyd-corp/_stock/`)且 SKILL.md 里显式说明"可复用"。
+
+
+---
+
+## 2026-06 更新八（新增 C14 / C15 / C16 · 周报 / 复盘 / 内部同步场景支持）
+
+### 背景
+
+原 13 个版式全部为"B 端 SaaS 销售提案"设计。当 deck 内容是**周报、复盘、月报、团队同步**这类"对内同步进展"时，会出现：
+
+- C08 / C09 / C10 / C12 用不上（无客户、无团队照、无证言、无产品截图）
+- 内容形态多为"一段主张 + 几条要点 + 没有图"——找不到对应版式
+- AI 容易**滥用 `.qjyd-img-placeholder`**："反正我没合适版式，塞个占位顶上"——结果是"为了用版式而塞图占位"
+
+### 新增三个版式
+
+| ID | 用途 | 关键特征 |
+|---|---|---|
+| **C14 · Statement** | 纯文字主张页 | 巨标 + accent rule + 3-4 条要点（dense）or 一段引言（sparse），**整页无图** |
+| **C15 · Status Duo** | 成果 / 瓶颈对照 | 左 DONE 海洋青 / 右 NEXT 中性灰，1:1 等宽，**整页无图** |
+| **C16 · Bullet Manifest** | 要点墙（3 列） | 6 项纯文字，顶部 hairline，比 C07 cards-2x2 轻 70% |
+
+### 红线 19（新增 · 与 SKILL.md qjyd-corp 红线速查同步）
+
+> **`.qjyd-img-placeholder` 只能在"该页天然需要图但素材未到位"时使用，禁止当作"找不到版式的兜底"**。
+>
+> 如果一页内容本身不需要图（纯主张 / 纯数据对比 / 纯要点），用 **C14 / C15 / C16**，不要用 `C08 + placeholder` 兜底。
+>
+> 判断方法：把 placeholder 整块**删掉**问自己——"这页内容信息有没有缺？" 如果没缺，那么这页不需要图，应该换无图版式。
+
+### C15 实现踩过的坑（生成时务必对齐）
+
+1. **不要给 `.qjyd-status-duo` 加 `align-items: stretch`**——左右栏会被强制等高，sd-points 短的那栏中间会出现大段留白。**保持 `align-items: start`**
+2. **不要给 `.sd-foot` 加 `margin-top: auto`**——左栏没有 sd-foot 时双栏不对称。**保持紧跟 sd-points 之后**
+3. **NEXT 栏不允许用红色**——qjyd-corp 没有红色语义，"瓶颈"是中性的"下一步"，用 `var(--text-2)` / `var(--text-3)`
+4. **左右栏内容数量差距 ≤ 2 条**——3 条 vs 5 条勉强可以，2 条 vs 6 条直接换 C14
+
+### C16 与 C07 的边界
+
+- **C07 cards-2x2** = 对外宣讲用的"模块展览"（每个卡有图标 + chip + tag，卡片框圆角 + 弱阴影）
+- **C16 bullet-manifest** = 对内同步用的"要点清单"（无框 + 顶部 hairline + 编号 + 状态 tag）
+- 凡是"我团队这周做了 N 件事 / 这季度完成了 N 个里程碑"，**永远用 C16**，不要 C07
+
+
+---
+
+## 2026-06 更新九（C14 / C15 / C16 留白与字号微调）
+
+### 现象
+
+C14 / C15 / C16 三页初版在 1600×900 viewport 下都呈现"内容堆顶部、底部大段空白"。
+
+### 根因
+
+**C14**：`.qjyd-statement` 设了 `justify-content: center`，但 `.st-meta` 的 `margin-top: auto` 把 meta 推到底部 —— **flex 容器一旦有子元素 `margin-top: auto`，`justify-content` 立即失效**（auto margin 吃光所有剩余空间）。结果：kicker / 巨标 / rule / points 挤在顶部，meta 孤悬底部，中间 365px 空白。
+
+**C15**：`.qjyd-status-duo` 用了 `align-items: start`，双栏内容自然从顶部排，下方剩余空间无法被吸收。
+
+**C16**：`.qjyd-bullet-manifest` 用了 `align-content: start`，6 项要点墙整体贴顶。
+
+### 修复
+
+| 版式 | 关键修改 |
+|---|---|
+| C14 | 删除 `.st-meta` 的 `margin-top: auto` → `justify-content: center` 重新生效 |
+| C15 | `align-items: start` → `align-items: center` + sd-rule `height: 100%` |
+| C16 | `align-content: start` → `align-content: center` + bm-item `min-height: 120px` |
+| 三者共同 | 字号普涨 10-15%（标题、要点、desc 同步上调），row-gap 适度放大让单元呼吸 |
+
+### 红线（追加, 与红线 19 互补）
+
+> **flex / grid 容器使用 `justify-content / align-content: center` 时，禁止子元素同时使用 `margin-top: auto` 或 `margin-bottom: auto`**。两者语义冲突，auto margin 优先级更高，会让 center 静默失效。
+>
+> 如果一定要让某个子元素贴底（比如卡片内的 tag），请确保**父容器已有显式 `min-height` 或被外部网格拉伸**，不要依赖 `margin-top: auto` 来"推到底"——这是 C16 的 `.bm-tag` 才能保留 `margin-top: auto` 的原因（它的父容器 `.bm-item` 有 `min-height: 120px`）。
+
+### 字号映射（修订后, 三者通用）
+
+| 元素 | 修订前 | 修订后 |
+|---|---|---|
+| C14 巨标 `st-display` | `clamp(64px, 6.4vw, 124px)` | `clamp(68px, 6.8vw, 132px)` |
+| C14 dense 要点 | `clamp(20px, 1.5vw, 26px)` | `clamp(22px, 1.65vw, 30px)` |
+| C14 sparse 引言 | `clamp(24px, 1.9vw, 34px)` | `clamp(26px, 2.05vw, 38px)` |
+| C15 sd-title | `clamp(28px, 2.4vw, 42px)` | `clamp(30px, 2.6vw, 46px)` |
+| C15 sd-points | `clamp(17px, 1.25vw, 22px)` | `clamp(18px, 1.35vw, 24px)` |
+| C16 bm-title | `clamp(20px, 1.5vw, 26px)` | `clamp(22px, 1.65vw, 30px)` |
+| C16 bm-desc | `clamp(15px, 1.05vw, 18px)` | `clamp(16px, 1.15vw, 20px)` |
+| C16 bm-num | `clamp(20px, 1.4vw, 26px)` | `clamp(22px, 1.55vw, 30px)` |
+| C16 bm-tag | 11px | 12px |
+
+> 投屏演示场景下，以上字号都属于"够大但不咄咄逼人"的安全区间。如果用户内容明显短（比如 C14 只有 2 条要点），可以再上调 10%；如果接近上限（C14 4 条要点 / C15 4 条 / C16 6 项），保持当前值即可。

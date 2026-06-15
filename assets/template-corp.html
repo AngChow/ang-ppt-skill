@@ -1910,6 +1910,259 @@
   }
 
   /* ========== C13 · 结束页 Thank You ========== */
+
+  /* ============================================================
+     C14 · Statement / Position (纯文字主张页)
+     用途: 周报核心结论 / 复盘洞察 / 阶段性表态 / manifesto
+     变体 A (.qjyd-statement.dense): 巨标 + accent-line + 3-4 条要点
+     变体 B (.qjyd-statement.sparse): 巨标 + accent-line + 1 段引言
+     ============================================================ */
+  .qjyd-statement{
+    flex:1; display:flex; flex-direction:column;
+    justify-content:center;            /* 巨标垂直居中 (前提: 子元素无 margin-top:auto) */
+    gap:var(--sp-8);
+    padding:var(--sp-6) 0 var(--sp-9);
+    min-height:0;
+  }
+  .qjyd-statement .st-kicker{
+    font-family:var(--sans); font-size:13px; font-weight:600;
+    letter-spacing:.18em; text-transform:uppercase;
+    color:var(--accent-dark);
+  }
+  .qjyd-statement .st-display{
+    font-family:var(--sans-zh); font-weight:700;
+    font-size:clamp(68px, 6.8vw, 132px);
+    line-height:1.02; letter-spacing:-.02em;
+    color:var(--ink);
+    max-width:24ch;                    /* 控制单行不超过 24 字 */
+  }
+  .qjyd-statement .st-display .accent-line{
+    display:inline-block;
+    background-image:linear-gradient(120deg,#00D4B5,#00897B);
+    -webkit-background-clip:text; background-clip:text;
+    -webkit-text-fill-color:transparent; color:transparent;
+  }
+  /* accent-line 横线 (在标题与下方内容之间) */
+  .qjyd-statement .st-rule{
+    width:96px; height:5px;
+    background:var(--accent);
+    border-radius:2px;
+  }
+  /* 变体 A · dense: 3-4 条要点 */
+  .qjyd-statement.dense .st-points{
+    list-style:none; padding:0; margin:0;
+    display:grid;
+    grid-template-columns:repeat(2, minmax(0, 1fr));
+    column-gap:var(--sp-9);
+    row-gap:var(--sp-6);
+    max-width:1280px;
+  }
+  .qjyd-statement.dense .st-points li{
+    font-family:var(--sans-zh);
+    font-size:clamp(22px, 1.65vw, 30px);
+    line-height:1.5; color:var(--text-1);
+    font-weight:400;
+    padding-left:26px; position:relative;
+  }
+  .qjyd-statement.dense .st-points li::before{
+    content:""; position:absolute; left:0; top:.7em;
+    width:10px; height:10px;
+    background:var(--accent);
+    border-radius:2px;
+  }
+  .qjyd-statement.dense .st-points li b,
+  .qjyd-statement.dense .st-points li strong{
+    color:var(--accent-dark);
+    font-weight:700;
+    font-family:var(--sans);                /* 数字用无衬线 */
+    letter-spacing:-.01em;
+  }
+  /* 变体 B · sparse: 一段引言, 字号偏大 */
+  .qjyd-statement.sparse .st-lede{
+    font-family:var(--sans-zh);
+    font-size:clamp(26px, 2.05vw, 38px);
+    line-height:1.6; color:var(--text-1);
+    font-weight:400;
+    max-width:46ch;
+  }
+  .qjyd-statement.sparse .st-lede em{
+    font-style:normal; color:var(--accent-dark);
+    font-weight:600;
+    background:linear-gradient(transparent 65%, rgba(0,191,165,.18) 65%);
+    padding:0 4px;
+  }
+  /* 右下角小型 meta 信号 (可选): 出处/日期/页码 */
+  .qjyd-statement .st-meta{
+    /* 不再用 margin-top:auto, 否则 .qjyd-statement 的 justify-content:center 会失效 */
+    font-family:var(--sans);
+    font-size:14px; color:var(--text-3);
+    letter-spacing:.05em;
+    display:flex; gap:var(--sp-6);
+  }
+  .qjyd-statement .st-meta b{
+    color:var(--text-2); font-weight:500;
+  }
+
+  /* ============================================================
+     C15 · Status Duo (成果 / 瓶颈对照页, 无图)
+     左栏 = DONE (accent 海洋青) / 右栏 = NEXT (中性灰, 不用红色)
+     1:1 双栏, 中间 hairline 分隔
+     ============================================================ */
+  .qjyd-status-duo{
+    flex:1; display:grid;
+    grid-template-columns: 1fr 1px 1fr;
+    column-gap:var(--sp-9);
+    align-items:center;             /* 修复: center 让双栏垂直居中, 解决底部留白过大 */
+    min-height:0;
+    padding:var(--sp-5) 0 var(--sp-6);
+  }
+  .qjyd-status-duo .sd-rule{
+    width:1px; background:var(--line);
+    align-self:stretch;
+    height:100%;                    /* 与 align-items:center 协作: 自适应栏高 */
+    min-height:60vh;
+  }
+  .qjyd-status-duo .sd-col{
+    display:flex; flex-direction:column;
+    gap:var(--sp-7);
+    padding:var(--sp-4) 0;
+    min-height:0;
+  }
+  .qjyd-status-duo .sd-tag{
+    display:inline-flex; align-items:center; gap:10px;
+    font-family:var(--sans); font-size:13px; font-weight:600;
+    letter-spacing:.16em; text-transform:uppercase;
+  }
+  .qjyd-status-duo .sd-tag .sd-mark{
+    width:14px; height:14px; border-radius:999px;
+    display:inline-block; flex-shrink:0;
+  }
+  /* 左栏 DONE: 实心海洋青圆点 */
+  .qjyd-status-duo .sd-col.done .sd-tag{ color:var(--accent-dark); }
+  .qjyd-status-duo .sd-col.done .sd-mark{
+    background:var(--accent);
+    box-shadow:0 0 0 4px rgba(0,191,165,.18);
+  }
+  /* 右栏 NEXT: 空心圆环 (中性) */
+  .qjyd-status-duo .sd-col.next .sd-tag{ color:var(--text-2); }
+  .qjyd-status-duo .sd-col.next .sd-mark{
+    background:transparent;
+    border:2px solid var(--text-3);
+    box-sizing:border-box;
+  }
+  .qjyd-status-duo .sd-title{
+    font-family:var(--sans-zh); font-weight:600;
+    font-size:clamp(30px, 2.6vw, 46px);
+    line-height:1.2; letter-spacing:-.01em;
+    color:var(--ink);
+    max-width:18ch;
+  }
+  .qjyd-status-duo .sd-col.next .sd-title{ color:var(--text-1); }
+  .qjyd-status-duo .sd-points{
+    list-style:none; padding:0; margin:0;
+    display:flex; flex-direction:column;
+    gap:var(--sp-5);
+  }
+  .qjyd-status-duo .sd-points li{
+    font-family:var(--sans-zh);
+    font-size:clamp(18px, 1.35vw, 24px);
+    line-height:1.55; color:var(--text-1);
+    font-weight:400;
+    padding-left:24px; position:relative;
+  }
+  .qjyd-status-duo .sd-col.done .sd-points li::before{
+    content:""; position:absolute; left:0; top:.55em;
+    width:10px; height:10px; border-radius:2px;
+    background:var(--accent);
+  }
+  .qjyd-status-duo .sd-col.next .sd-points li::before{
+    content:""; position:absolute; left:0; top:.6em;
+    width:10px; height:10px; border-radius:999px;
+    border:1.5px solid var(--text-3);
+    box-sizing:border-box;
+  }
+  .qjyd-status-duo .sd-points li b,
+  .qjyd-status-duo .sd-points li strong{
+    color:var(--accent-dark);
+    font-weight:700;
+    font-family:var(--sans);
+    letter-spacing:-.01em;
+  }
+  .qjyd-status-duo .sd-col.next .sd-points li b{
+    color:var(--text-1);
+  }
+  /* 底部主张/小结 (可选) */
+  .qjyd-status-duo .sd-foot{
+    margin-top:var(--sp-3); padding-top:var(--sp-5);
+    font-family:var(--sans-zh); font-size:14px;
+    color:var(--text-3); line-height:1.5;
+    border-top:1px solid var(--line);
+  }
+
+  /* ============================================================
+     C16 · Bullet Manifest (要点墙, 3 列纯文字)
+     用途: 周报"本周做了 N 件事" / 复盘"亮点 N 项" / 待办清单
+     更轻的替代 C07 cards-2x2: 无卡片框/无 chip/无图标(可选小数字)
+     ============================================================ */
+  .qjyd-bullet-manifest{
+    flex:1; display:grid;
+    grid-template-columns:repeat(3, minmax(0, 1fr));
+    column-gap:var(--sp-9);
+    row-gap:var(--sp-9);              /* 行间距加大, 单元呼吸感 */
+    align-content:center;             /* 修复: 整体网格垂直居中, 解决底部留白过大 */
+    padding:var(--sp-5) 0 var(--sp-6);
+    min-height:0;
+  }
+  .qjyd-bullet-manifest .bm-item{
+    display:flex; flex-direction:column;
+    gap:var(--sp-4);                  /* 内部块距加大 */
+    padding-top:var(--sp-5);
+    padding-bottom:var(--sp-3);
+    min-height:120px;                 /* 让每项有起码的体量 */
+    border-top:2px solid var(--line);     /* 顶部细线分隔, hairline 风 */
+    position:relative;
+  }
+  .qjyd-bullet-manifest .bm-item.accent{
+    border-top-color:var(--accent);       /* 重点项: 顶部线换 accent 色 */
+  }
+  .qjyd-bullet-manifest .bm-num{
+    font-family:var(--sans); font-weight:300;
+    font-size:clamp(22px, 1.55vw, 30px);
+    color:var(--text-3); letter-spacing:.04em;
+    line-height:1;
+  }
+  .qjyd-bullet-manifest .bm-item.accent .bm-num{
+    color:var(--accent-dark); font-weight:500;
+  }
+  .qjyd-bullet-manifest .bm-title{
+    font-family:var(--sans-zh); font-weight:600;
+    font-size:clamp(22px, 1.65vw, 30px);
+    line-height:1.3; color:var(--ink);
+    letter-spacing:-.005em;
+  }
+  .qjyd-bullet-manifest .bm-desc{
+    font-family:var(--sans-zh); font-weight:400;
+    font-size:clamp(16px, 1.15vw, 20px);
+    line-height:1.6; color:var(--text-2);
+  }
+  .qjyd-bullet-manifest .bm-desc b,
+  .qjyd-bullet-manifest .bm-desc strong{
+    color:var(--accent-dark); font-weight:700;
+    font-family:var(--sans);
+  }
+  /* 可选 tag: 状态标识 (进行中 / 已完成 / 阻塞) */
+  .qjyd-bullet-manifest .bm-tag{
+    align-self:flex-start;
+    font-family:var(--sans); font-size:12px; font-weight:600;
+    letter-spacing:.14em; text-transform:uppercase;
+    padding:4px 12px; border-radius:999px;
+    background:var(--paper-soft); color:var(--text-2);
+    margin-top:auto;                  /* 把 tag 推到 bm-item 内部底部 (依赖 min-height) */
+  }
+  .qjyd-bullet-manifest .bm-item.accent .bm-tag{
+    background:rgba(0,191,165,.12); color:var(--accent-dark);
+  }
+
   .qjyd-thank{
     display:grid; grid-template-columns:7fr 5fr;
     gap:var(--sp-10); height:100%; align-items:center;
@@ -2481,6 +2734,126 @@
   <div class="qjyd-foot">
     <span class="brand">薪人薪事 · 产品介绍</span>
     <span>2026 · QJYD-CORP · PAGE 12</span>
+  </div>
+</section>
+
+<section class="slide light" data-layout="C14" data-animate="statement">
+  <!-- C14 · Statement / Position (纯文字主张页 · 变体 A · dense)
+       用途: 周报核心结论 / 复盘洞察 / 阶段性表态
+       变体 B (sparse, 一段引言式) 写法见 references/layouts-corp.md
+       规则: 整页无图无 KPI 大字, 巨标 + accent rule + 3-4 条带数据的要点 -->
+  <div class="qjyd-statement dense">
+    <div class="st-kicker" data-anim>STATEMENT · 阶段性结论</div>
+    <h1 class="st-display" data-anim>
+      机器多承担一点，<br>
+      <span class="accent-line">人工才有空间创造</span>。
+    </h1>
+    <div class="st-rule" data-anim></div>
+    <ul class="st-points" data-anim>
+      <li>智齿独立承接率达 <b>93%</b> · 创 Q2 单周新高</li>
+      <li>人工工时人效 <b>93.97%</b> · 时间进度 79.12%</li>
+      <li>知识自沉淀 3.0 上线 · <b>85%</b> 可直接入库</li>
+      <li>下一步 · 把客服助手与小薪 / 知识库联动起来</li>
+    </ul>
+    <div class="st-meta" data-anim>
+      <span><b>WEEKLY · 2026.06.12</b></span>
+      <span>客户服务部 · 内部同步</span>
+    </div>
+  </div>
+  <div class="qjyd-foot">
+    <span class="brand">薪人薪事 · 产品介绍</span>
+    <span>2026 · QJYD-CORP · PAGE 14</span>
+  </div>
+</section>
+
+<section class="slide light" data-layout="C15" data-animate="status-duo">
+  <!-- C15 · Status Duo (成果 / 瓶颈对照页, 无图)
+       规则: 左 DONE = accent 海洋青, 右 NEXT = 中性灰 (不用红色)
+       每栏最多 4 条 bullet, 第一行可加粗主张, 整页无图 -->
+  <div style="display:flex;flex-direction:column;gap:var(--sp-4);margin-bottom:var(--sp-7)" data-anim>
+    <div class="qjyd-meta">PROGRESS · 知识自沉淀 3.0</div>
+    <h1 class="qjyd-h1">本周成果与下一步</h1>
+  </div>
+  <div class="qjyd-status-duo">
+    <div class="sd-col done">
+      <div class="sd-tag"><span class="sd-mark"></span>DONE · 本周成果</div>
+      <div class="sd-title">3.0 优化完成<br>本周正式启用</div>
+      <ul class="sd-points">
+        <li><b>85%</b> · 沉淀可直接入库知识占比</li>
+        <li><b>100%</b> · 待人工审核分类准确率</li>
+        <li>本周起进入正式运营周期</li>
+        <li>话后批量沉淀已稳定运行</li>
+      </ul>
+    </div>
+    <div class="sd-rule"></div>
+    <div class="sd-col next">
+      <div class="sd-tag"><span class="sd-mark"></span>NEXT · 待打通</div>
+      <div class="sd-title">知识全自动入库<br>仍差最后一环</div>
+      <ul class="sd-points">
+        <li>低代码平台知识库接口尚未开放</li>
+        <li>当前依赖 <b>手动上传</b> 完成同步</li>
+        <li>待开放接口后即可全自动化</li>
+        <li>计划与平台侧本月内对齐方案</li>
+      </ul>
+      <div class="sd-foot">瓶颈不在自沉淀质量, 而在与下游知识库的连接通道。</div>
+    </div>
+  </div>
+  <div class="qjyd-foot">
+    <span class="brand">薪人薪事 · 产品介绍</span>
+    <span>2026 · QJYD-CORP · PAGE 15</span>
+  </div>
+</section>
+
+<section class="slide light" data-layout="C16" data-animate="bullet-manifest">
+  <!-- C16 · Bullet Manifest (要点墙, 3 列纯文字)
+       用途: "本周做了 N 件事" / 待办清单 / 复盘亮点
+       规则: 无卡片框 / 无 chip / 无图标, 顶部细线 (重点项换 accent),
+             6 项最稳定; 4 项 / 5 项也可, 最多 9 项 (3x3) -->
+  <div style="display:flex;flex-direction:column;gap:var(--sp-4);margin-bottom:var(--sp-8)" data-anim>
+    <div class="qjyd-meta">THIS WEEK · 本周完成</div>
+    <h1 class="qjyd-h1">六件事，一周交付</h1>
+  </div>
+  <div class="qjyd-bullet-manifest">
+    <div class="bm-item">
+      <div class="bm-num">01</div>
+      <div class="bm-title">智齿机器人提效</div>
+      <div class="bm-desc">独立承接率 <b>93%</b>, chat 有效回答 <b>19,714</b> 条</div>
+      <span class="bm-tag">已完成</span>
+    </div>
+    <div class="bm-item">
+      <div class="bm-num">02</div>
+      <div class="bm-title">在线 / 企微双渠道盘点</div>
+      <div class="bm-desc">在线自动化 <b>63.37%</b>, 企微 <b>2.04%</b> · 数据已同步</div>
+      <span class="bm-tag">已完成</span>
+    </div>
+    <div class="bm-item">
+      <div class="bm-num">03</div>
+      <div class="bm-title">Q2 用户调研推进</div>
+      <div class="bm-desc">已回收 <b>209 / 351</b> 家 · 回收率 59.54%</div>
+      <span class="bm-tag">推进中</span>
+    </div>
+    <div class="bm-item accent">
+      <div class="bm-num">04</div>
+      <div class="bm-title">知识自沉淀 3.0 启用</div>
+      <div class="bm-desc">85% 可入库, 100% 审核准确, 本周正式上线</div>
+      <span class="bm-tag">本周里程碑</span>
+    </div>
+    <div class="bm-item">
+      <div class="bm-num">05</div>
+      <div class="bm-title">客服助手基础搭建</div>
+      <div class="bm-desc">实时辅助 / 方案检索骨架完成, 待联动小薪</div>
+      <span class="bm-tag">推进中</span>
+    </div>
+    <div class="bm-item">
+      <div class="bm-num">06</div>
+      <div class="bm-title">分层 &amp; 标准化运营终稿</div>
+      <div class="bm-desc">2026 精细化运营方案定稿 · 下周开始执行</div>
+      <span class="bm-tag">已完成</span>
+    </div>
+  </div>
+  <div class="qjyd-foot">
+    <span class="brand">薪人薪事 · 产品介绍</span>
+    <span>2026 · QJYD-CORP · PAGE 16</span>
   </div>
 </section>
 
@@ -3603,10 +3976,66 @@ if(motion){
       {duration:.32, delay:.08 + i*.04, easing:EASE_ENTRY_EXP}));
   }
 
+
+  function rCorpStatement(slide){
+    /* C14 Statement: kicker 先入 -> 巨标题 fade+up -> rule line 横向拉伸 -> points/lede stagger */
+    const kicker = slide.querySelector('.qjyd-statement .st-kicker');
+    const title  = slide.querySelector('.qjyd-statement .st-display');
+    const rule   = slide.querySelector('.qjyd-statement .st-rule');
+    const points = [...slide.querySelectorAll('.qjyd-statement .st-points > li')];
+    const lede   = slide.querySelector('.qjyd-statement .st-lede');
+    const meta   = slide.querySelector('.qjyd-statement .st-meta');
+    hide([kicker, title, rule, ...points, lede, meta]);
+    if(kicker) animate(kicker, {opacity:[0,1]}, {duration:.28, easing:EASE_PROD});
+    if(title)  animate(title,  {opacity:[0,1], y:[10,0]}, {duration:.42, delay:.08, easing:EASE_ENTRY_EXP});
+    if(rule)   animate(rule,   {opacity:[0,1], scaleX:[.2,1]},
+                               {duration:.4, delay:.22, easing:EASE_ENTRY_EXP, transformOrigin:'left center'});
+    points.forEach((el, i)=>animate(el, {opacity:[0,1], y:[6,0]},
+      {duration:.32, delay:.3 + i*.06, easing:EASE_ENTRY_EXP}));
+    if(lede)   animate(lede,   {opacity:[0,1], y:[6,0]}, {duration:.4, delay:.3, easing:EASE_ENTRY_EXP});
+    if(meta)   animate(meta,   {opacity:[0,1]}, {duration:.3, delay:.5, easing:EASE_PROD});
+  }
+  function rCorpStatusDuo(slide){
+    /* C15 Status Duo: head -> 左 DONE 滑入 -> 右 NEXT 滑入 (略延迟) -> 各栏 points stagger */
+    const head = slide.querySelectorAll('[data-anim]')[0];
+    const done = slide.querySelector('.qjyd-status-duo .sd-col.done');
+    const next = slide.querySelector('.qjyd-status-duo .sd-col.next');
+    const rule = slide.querySelector('.qjyd-status-duo .sd-rule');
+    const dPts = done ? [...done.querySelectorAll('.sd-points > li')] : [];
+    const nPts = next ? [...next.querySelectorAll('.sd-points > li')] : [];
+    hide([done, next, rule, ...dPts, ...nPts]);
+    if(head) animate(head, {opacity:[0,1]}, {duration:.3, easing:EASE_PROD});
+    if(done) animate(done, {opacity:[0,1], x:[-8,0]}, {duration:.4, delay:.08, easing:EASE_ENTRY_EXP});
+    if(rule) animate(rule, {opacity:[0,1], scaleY:[.4,1]},
+                           {duration:.4, delay:.16, easing:EASE_ENTRY_EXP, transformOrigin:'center top'});
+    if(next) animate(next, {opacity:[0,1], x:[8,0]}, {duration:.4, delay:.16, easing:EASE_ENTRY_EXP});
+    /* 容器 reveal 后, 子条目再做轻度 stagger (起点 0.4 不是 0, 避免空白) */
+    dPts.forEach((el, i)=>{
+      el.style.opacity='0.4';
+      animate(el, {opacity:[0.4,1], y:[3,0]}, {duration:.26, delay:.22 + i*.04, easing:EASE_ENTRY_EXP});
+    });
+    nPts.forEach((el, i)=>{
+      el.style.opacity='0.4';
+      animate(el, {opacity:[0.4,1], y:[3,0]}, {duration:.26, delay:.3 + i*.04, easing:EASE_ENTRY_EXP});
+    });
+  }
+  function rCorpBulletManifest(slide){
+    /* C16 Bullet Manifest: head -> 顶部线 grow + 编号 fade -> title -> desc, 整体 < 0.5s */
+    const head = slide.querySelectorAll('[data-anim]')[0];
+    const items = [...slide.querySelectorAll('.qjyd-bullet-manifest .bm-item')];
+    if(head) animate(head, {opacity:[0,1]}, {duration:.3, easing:EASE_PROD});
+    /* 不全部 hide, 只把整块起点压到 0.5, 避免翻页期间画面空荡 */
+    items.forEach((el, i)=>{
+      el.style.opacity='0.5';
+      el.style.transformOrigin='left top';
+      animate(el, {opacity:[0.5, 1], y:[4, 0]},
+        {duration:.3, delay:.08 + i*.05, easing:EASE_ENTRY_EXP});
+    });
+  }
+
   const RECIPES = {
     'hero': rHero,
     'progression': rProgression,
-    'statement': rStatement,
     'grid-reveal': rGridReveal,
     'stack-build': rStackBuild,
     'measure-up': rMeasureUp,
@@ -3636,6 +4065,9 @@ if(motion){
     'quote':        rCorpQuote,
     'compare':      rCorpCompare,
     'team':         rCorpTeam,
+    'statement':       rCorpStatement,
+    'status-duo':      rCorpStatusDuo,
+    'bullet-manifest': rCorpBulletManifest,
   };
 
   function revealStatic(slide){
