@@ -1,4 +1,4 @@
-# Guizang PPT Skill · Web Decks / Images / Covers
+# ang-ppt-skill · Web Decks / Images / Covers
 
 ![GitHub stars](https://img.shields.io/github/stars/AngChow/ang-ppt-skill?style=flat-square)
 ![License](https://img.shields.io/github/license/AngChow/ang-ppt-skill?style=flat-square)
@@ -6,8 +6,6 @@
 ![HTML Deck](https://img.shields.io/badge/HTML-Deck-0A7CFF?style=flat-square)
 ![Claude Code](https://img.shields.io/badge/Claude%20Code-Supported-6B5B95?style=flat-square)
 ![Codex](https://img.shields.io/badge/Codex-Supported-222222?style=flat-square)
-[![Supported by ZhenFund Token Grant](https://img.shields.io/static/v1?label=ZhenFund%20Token%20Grant&message=Supported&color=FF4D00&style=flat-square)](https://zhenfund.feishu.cn/share/base/form/shrcn1lAANF659o7EpWnxlR1VOh?sessionid=)
-![360 Security Lobster Gold Sponsor](https://img.shields.io/static/v1?label=360%20Security%20Lobster&message=Gold%20Sponsor&color=1677FF&style=flat-square)
 
 An agent skill for Claude Code, Codex, and similar coding-agent environments. It generates **single-file HTML horizontal-swipe decks**, deck visuals, and social cover pages.
 
@@ -17,7 +15,7 @@ It ships with three visual systems:
 - **Style B: Swiss International Typographic Style**. Grid-first, one high-saturation anchor color, sharp rectangles, hairline rules, and extreme type contrast. Best for facts, products, analysis, and frameworks.
 - **Style C: qjyd-corp enterprise (B2B SaaS)**. Rounded enterprise-SaaS aesthetic (8px radius cards + soft shadows + floating SVG geometry), teal as the default accent, system-font first. Best for B2B SaaS product intros, sales proposals, customer cases, and client-facing decks; ships with 13 `C01-C13` locked layouts and a default Xinrenxinshi (薪人薪事) brand logo.
 
-> Distilled by [Guizang](https://x.com/op7418) from offline talks like "One-Person Company: Organizations Folded by AI" and "A New Way of Working." Every pitfall hit during those decks is logged in `checklist.md`.
+> This skill is a derivative work based on [op7418/guizang-ppt-skill](https://github.com/op7418/guizang-ppt-skill) (AGPL-3.0). On top of the original Style A (editorial magazine) and Style B (Swiss international typography), it adds Style C — qjyd-corp enterprise — plus assorted engineering refinements.
 
 **Old Theme · Style A Editorial Magazine**
 
@@ -405,7 +403,6 @@ If the user asks for an "enterprise-style deck", "business proposal", or "Xinren
 - [*Monocle*](https://monocle.com) magazine layouts
 - YC Garry Tan — "Thin Harness, Fat Skills"
 - Massimo Vignelli / Helvetica Forever / Swiss International Typographic Style
-- Guizang's offline talk deck series
 - Notion / Linear / Stripe enterprise sites (Style C anchor references)
 - Xinrenxinshi product UI (Style C default theme color baseline)
 

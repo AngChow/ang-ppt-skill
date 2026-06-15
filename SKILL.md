@@ -628,7 +628,6 @@ ang-ppt-skill/
 本 skill 的两种风格分别参考了：
 
 **风格 A · 电子杂志风**:
-- 歸藏 "一人公司：被 AI 折叠的组织" 分享（2026-04-22，27 页）
 - *Monocle* 杂志的版式
 - YC 总裁 Garry Tan "Thin Harness, Fat Skills" 那篇博客的 demo
 
