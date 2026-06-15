@@ -371,10 +371,10 @@ Pick from `references/themes-corp.md`. **Custom hex values are not allowed.** A 
 
 | Preview | Theme | Anchor color and best for |
 |---------|-------|---------------------------|
-| <img src="./assets/readme/style-c-theme-mint.png" width="260" alt="🌿 Mint Enterprise theme preview"> | 🌿 **Mint Enterprise (default)** | `#00BFA5` ocean teal (Xinrenxinshi's brand color). General use / sales-facing / business proposals / customer-facing decks. **The default when in doubt.** |
-| <img src="./assets/readme/style-c-theme-cyan.png" width="260" alt="🌊 Cyan Tech theme preview"> | 🌊 **Cyan Tech** | `#006586` deep cyan ink. Tech sharing / data reporting / engineering presenting product architecture / B2B technical demos. |
-| <img src="./assets/readme/style-c-theme-orange.png" width="260" alt="🌅 Warm Orange Proposal theme preview"> | 🌅 **Warm Orange Proposal** | `#FF7847` warm orange-vermilion. Sales proposals / growth reports / marketing campaign plans / customer case decks. |
-| <img src="./assets/readme/style-c-theme-deep.png" width="260" alt="🌌 Deep Space Review theme preview"> | 🌌 **Deep Space Review** | `#1A2028` deep space blue-gray + `#00BFA5` mint accent. **The only dark-base theme** — promotion review / personal performance review / team retro / year-end summary. |
+| <img src="./assets/readme/style-c-theme-mint.png" width="420" alt="🌿 Mint Enterprise theme preview"> | 🌿 **Mint Enterprise (default)** | `#00BFA5` ocean teal (Xinrenxinshi's brand color). General use / sales-facing / business proposals / customer-facing decks. **The default when in doubt.** |
+| <img src="./assets/readme/style-c-theme-cyan.png" width="420" alt="🌊 Cyan Tech theme preview"> | 🌊 **Cyan Tech** | `#006586` deep cyan ink. Tech sharing / data reporting / engineering presenting product architecture / B2B technical demos. |
+| <img src="./assets/readme/style-c-theme-orange.png" width="420" alt="🌅 Warm Orange Proposal theme preview"> | 🌅 **Warm Orange Proposal** | `#FF7847` warm orange-vermilion. Sales proposals / growth reports / marketing campaign plans / customer case decks. |
+| <img src="./assets/readme/style-c-theme-deep.png" width="420" alt="🌌 Deep Space Review theme preview"> | 🌌 **Deep Space Review** | `#1A2028` deep space blue-gray + `#00BFA5` mint accent. **The only dark-base theme** — promotion review / personal performance review / team retro / year-end summary. |
 
 If the user asks for an "enterprise-style deck", "business proposal", or "Xinrenxinshi style" without specifying color, default to 🌿 Mint Enterprise.
 
