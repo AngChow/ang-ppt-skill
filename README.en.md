@@ -165,9 +165,6 @@ Redesign this product screenshot as a 16:10 slide visual.
 |----------|--------|-------|
 | Claude Code | Supported | Native Skill workflow for creating and iterating HTML decks |
 | Codex | Supported | All three styles full coverage — Style C is the most natural fit for B2B sales / business proposal scenarios. Good for deck generation, image generation, and browser-based visual QA. |
-| Cursor / other local agents | Works | Requires filesystem access and shell execution |
-| WorkBuddy | In adaptation | Marketplace-ready version is being prepared separately |
-| Plain chatbot | Not recommended | Without filesystem and browser preview, full deck generation is hard to stabilize |
 
 ## Install
 
