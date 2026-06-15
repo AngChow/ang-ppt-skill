@@ -1,7 +1,5 @@
 # ang-ppt-skill · 网页 PPT / 配图 / 封面
 
-![GitHub stars](https://img.shields.io/github/stars/AngChow/ang-ppt-skill?style=flat-square)
-![License](https://img.shields.io/github/license/AngChow/ang-ppt-skill?style=flat-square)
 ![Skill](https://img.shields.io/badge/Skill-Agent-111111?style=flat-square)
 ![HTML Deck](https://img.shields.io/badge/HTML-Deck-0A7CFF?style=flat-square)
 ![Claude Code](https://img.shields.io/badge/Claude%20Code-Supported-6B5B95?style=flat-square)
