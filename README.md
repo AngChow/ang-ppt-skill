@@ -27,7 +27,7 @@
 
 **新主题 · Style C 企家有道企业风(qjyd-corp / B 端 SaaS)**
 
-<!-- TODO: 待补充 Style C 整体效果展示图 → assets/readme/style-c-cover.png -->
+
 ![Style C 企家有道企业风效果展示](./assets/readme/style-c-cover.png)
 
 ## Prerequisites · 装机清单
@@ -372,10 +372,10 @@ Style C 从 `references/themes-corp.md` 里选一套，**不允许自定义 hex 
 
 | 预览 | 主题 | 锚点色与适合场景 |
 |------|------|------------------|
-| <!-- TODO: assets/readme/style-c-theme-mint.png --><img src="./assets/readme/style-c-theme-mint.png" width="260" alt="🌿 薄荷企业主题预览"> | 🌿 **薄荷企业(默认)** | `#00BFA5` 海洋青(薪人薪事自家色)。通用 / 销售面客 / 商务提案 / 客户对接。**不知道选啥时的默认。** |
-| <!-- TODO: assets/readme/style-c-theme-cyan.png --><img src="./assets/readme/style-c-theme-cyan.png" width="260" alt="🌊 青墨科技主题预览"> | 🌊 **青墨科技** | `#006586` 深青墨。技术分享 / 数据汇报 / 研发对外讲产品架构 / B 端技术 demo。 |
-| <!-- TODO: assets/readme/style-c-theme-orange.png --><img src="./assets/readme/style-c-theme-orange.png" width="260" alt="🌅 暖橙提案主题预览"> | 🌅 **暖橙提案** | `#FF7847` 暖橙朱红。销售提案 / 增长汇报 / 营销活动方案 / 客户案例集。 |
-| <!-- TODO: assets/readme/style-c-theme-deep.png --><img src="./assets/readme/style-c-theme-deep.png" width="260" alt="🌌 深空述职主题预览"> | 🌌 **深空述职** | `#1A2028` 深空蓝灰 + `#00BFA5` 薄荷点缀。**唯一一个默认 dark 主底**主题——职级评审 / 个人述职 / 团队复盘 / 年终总结。 |
+| <img src="./assets/readme/style-c-theme-mint.png" width="260" alt="🌿 薄荷企业主题预览"> | 🌿 **薄荷企业(默认)** | `#00BFA5` 海洋青(薪人薪事自家色)。通用 / 销售面客 / 商务提案 / 客户对接。**不知道选啥时的默认。** |
+| <img src="./assets/readme/style-c-theme-cyan.png" width="260" alt="🌊 青墨科技主题预览"> | 🌊 **青墨科技** | `#006586` 深青墨。技术分享 / 数据汇报 / 研发对外讲产品架构 / B 端技术 demo。 |
+| <img src="./assets/readme/style-c-theme-orange.png" width="260" alt="🌅 暖橙提案主题预览"> | 🌅 **暖橙提案** | `#FF7847` 暖橙朱红。销售提案 / 增长汇报 / 营销活动方案 / 客户案例集。 |
+| <img src="./assets/readme/style-c-theme-deep.png" width="260" alt="🌌 深空述职主题预览"> | 🌌 **深空述职** | `#1A2028` 深空蓝灰 + `#00BFA5` 薄荷点缀。**唯一一个默认 dark 主底**主题——职级评审 / 个人述职 / 团队复盘 / 年终总结。 |
 
 如果用户说"企业风 PPT"、"商务提案"或"薪人薪事风格"但没指定颜色，默认推荐 🌿 薄荷企业。
 
