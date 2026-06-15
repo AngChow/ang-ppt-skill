@@ -11,7 +11,7 @@ It ships with three visual systems:
 
 - **Style A: editorial magazine × electronic ink**. Picture *Monocle* with code stitched in. Best for narrative talks, opinions, salons, and personal voice.
 - **Style B: Swiss International Typographic Style**. Grid-first, one high-saturation anchor color, sharp rectangles, hairline rules, and extreme type contrast. Best for facts, products, analysis, and frameworks.
-- **Style C: qjyd-corp enterprise (B2B SaaS)**. Rounded enterprise-SaaS aesthetic (8px radius cards + soft shadows + floating SVG geometry), teal as the default accent, system-font first. Best for B2B SaaS product intros, sales proposals, customer cases, and client-facing decks; ships with 13 `C01-C13` locked layouts and a default Xinrenxinshi (薪人薪事) brand logo.
+- **Style C: qjyd-corp enterprise (B2B SaaS)**. Rounded enterprise-SaaS aesthetic (8px radius cards + soft shadows + floating SVG geometry), teal as the default accent, system-font first. Best for B2B SaaS product intros, sales proposals, customer cases, and client-facing decks; ships with 16 `C01-C16` locked layouts (including the new C14 Statement / C15 Status Duo / C16 Bullet Manifest layouts for internal-sync scenarios) and a default Xinrenxinshi (薪人薪事) brand logo.
 
 > This skill is a derivative work based on [op7418/guizang-ppt-skill](https://github.com/op7418/guizang-ppt-skill) (AGPL-3.0). On top of the original Style A (editorial magazine) and Style B (Swiss international typography), it adds Style C — qjyd-corp enterprise — plus assorted engineering refinements.
 
@@ -125,7 +125,7 @@ Redesign this product screenshot as a 16:10 slide visual.
 - 📐 **Horizontal swipe navigation**: ← → arrows / scroll wheel / touch swipe / bottom dots / ESC for index
 - 🧩 **Style A 10 layouts**: cover, divider, big numbers, image/text, image grid, pipeline, comparison, and more
 - 🧱 **Style B 22 locked layouts**: Cover, Statement, KPI Tower, Loop Diagram, Duo Compare, Image Hero, Closing Manifesto, and more
-- 🟢 **Style C 13 enterprise layouts**: Cover hero, chapter divider, agenda, big-number KPI, triple KPI, timeline, 4-card matrix, image+text, full-bleed image, pull quote, comparison table, team intro, Thank You
+- 🟢 **Style C 16 enterprise layouts**: Cover hero, chapter divider, agenda, big-number KPI, triple KPI, timeline, 4-card matrix, image+text, full-bleed image, pull quote, comparison table, team intro, Thank You **+ Statement / Status Duo / Bullet Manifest** (internal-sync layouts)
 - 🎨 **Curated theme presets**: 5 electronic-ink themes for Style A, 4 Swiss anchor-color themes for Style B, 4 enterprise-SaaS themes for Style C (Mint Enterprise / Cyan Tech / Warm Orange Proposal / Deep Space Review)
 - 🖼 **Optional Codex image flow**: generate documentary photos, infographics, flow diagrams, system maps, and UI scenes with GPT-Image 2.0 / GPT-M 2.0, then insert them at template-safe ratios
 - 📰 **Social covers**: generate 21:9 WeChat cover images, 1:1 share cards, 3:4 Xiaohongshu covers, video thumbnails, and related variants
@@ -241,13 +241,15 @@ node scripts/validate-swiss-deck.mjs path/to/index.html
 
 Style C is the "enterprise SaaS aesthetic" optimized for B2B commercial scenarios. **The default product anchor is Xinrenxinshi (薪人薪事)** — teal `#00BFA5` plus the bundled logo at `assets/qjyd-corp/xrxs-logo.png` — but the logo and brand color can be swapped for any other enterprise.
 
-- **13 named layouts**: `C01` cover hero / `C02` chapter divider / `C03` agenda / `C04` big-number KPI / `C05` triple KPI / `C06` timeline / `C07` 4-card matrix / `C08` image+text / `C09` full-bleed image / `C10` pull quote / `C11` comparison table / `C12` team intro / `C13` Thank You
+The scope extends beyond pure sales proposals to **weekly reports / monthly reports / retrospectives / team syncs** — the new C14/C15/C16 layouts are designed specifically for text-only content (statements, status comparisons, bullet manifests), eliminating the temptation to force image placeholders into image-less pages.
+
+- **16 named layouts**: `C01` cover hero / `C02` chapter divider / `C03` agenda / `C04` big-number KPI / `C05` triple KPI / `C06` timeline / `C07` 4-card matrix / `C08` image+text / `C09` full-bleed image / `C10` pull quote / `C11` comparison table / `C12` team intro / `C13` Thank You / `C14` Statement / `C15` Status Duo / `C16` Bullet Manifest
 - **4 theme colors**: 🌿 Mint Enterprise (default / general) · 🌊 Cyan Tech (technical sharing) · 🌅 Warm Orange Proposal (sales pitch) · 🌌 Deep Space Review (level-up review / dark-base reverse theme)
 - **Rounded enterprise SaaS aesthetic**: 8px card radius + soft shadows + floating SVG geometry; **no** WebGL background (lower rendering cost, more stable on conference-room projectors)
 - **System-font first**: PingFang SC + Helvetica Neue with no Google Fonts CDN dependency; safest for intranet / restricted networks
 - **Default logo slot**: cover C01 right side and Thank You C13 right side load `./images/logo.png` first, falling back to the bundled `xrxs-logo.png` (Xinrenxinshi logo, 512×512 transparent PNG)
 - **Image placeholder vs real image separation**: templates ship with `.qjyd-img-placeholder` (production-grade placeholders); replace the entire block with `<img class="qjyd-img-fit">` once real images arrive
-- **Strict redlines**: 17 generation redlines documented in `SKILL.md`, covering container alignment, entrance motion, image parent-child contracts, accent color consistency, etc. qjyd-corp does not have a standalone validator like Style B, but every `<section>` must carry `data-layout="Cxx"`
+- **Strict redlines**: 19 generation redlines documented in `SKILL.md`, covering container alignment, entrance motion, image parent-child contracts, accent color consistency, "placeholder is not a layout fallback", etc. qjyd-corp does not have a standalone validator like Style B, but every `<section>` must carry `data-layout="Cxx"`
 
 Best for: **SaaS product intros / sales proposals / customer cases / client-facing demos / team weekly reports / quarterly business reviews**.
 
@@ -325,7 +327,7 @@ ang-ppt-skill/
     ├── components.md     ← component catalog (type, color, grid, icons, callout, stat, pipeline)
     ├── layouts.md        ← Style A · 10 layout skeletons (paste-ready)
     ├── layouts-swiss.md  ← Style B · 22 locked Swiss layouts
-    ├── layouts-corp.md   ← Style C · 13 locked enterprise layouts
+    ├── layouts-corp.md   ← Style C · 16 locked enterprise layouts
     ├── swiss-layout-lock.md ← Swiss fidelity and layout hard rules
     ├── swiss-map-component.md ← Style B · S08 map extension component (MapLibre)
     ├── themes.md         ← Style A · 5 theme presets (pick, don't customize)
@@ -437,7 +439,7 @@ Run the install command again, or run `git pull` inside your local skill directo
 Just drop your product logo at `images/logo.png` inside the target project. The template loads `./images/logo.png` first and only falls back to the SKILL-bundled Xinrenxinshi logo if it fails to load — the image will never break. We also recommend tuning `themes-corp.md`'s `--accent` to match your brand — but only by picking one of the 4 presets; no custom hex (aesthetic protection mechanism).
 
 **Why doesn't Style C have a strict validator like Style B?**
-Style C's layout language is more flexible than Style B (C04 / C07 / C08 all allow free composition of cards / chips). Hard rules are mainly enforced by the 17 red lines in SKILL.md and the "2026-06 Update I~VI" sections in `layouts-corp.md`. `validate-swiss-deck.mjs` is also compatible with qjyd-corp — it just verifies that every page carries `data-layout="Cxx"`.
+Style C's layout language is more flexible than Style B (C04 / C07 / C08 all allow free composition of cards / chips). Hard rules are mainly enforced by the 19 red lines in SKILL.md and the "2026-06 Update I~IX" sections in `layouts-corp.md`. `validate-swiss-deck.mjs` is also compatible with qjyd-corp — it just verifies that every page carries `data-layout="Cxx"`.
 
 **First screenshot self-check fails with "chromium_headless_shell-XXXX not found" — what now?**
 That's Codex.app's bundled playwright not having downloaded its browser binary yet — unrelated to the skill itself. Just run the install once per [Prerequisites](#prerequisites) — ~94 MiB, takes about 80 seconds.

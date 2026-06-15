@@ -13,7 +13,7 @@
 
 - **Style A：电子杂志 × 电子墨水**。像 *Monocle* 贴上了代码，适合叙事、观点、分享、个人风格表达。
 - **Style B：瑞士国际主义**。网格至上、单一高饱和锚点色、直角、发丝线、极致字号对比，适合事实、产品、分析、方法论表达。
-- **Style C：企家有道企业风 / qjyd-corp**。圆角企业 SaaS 美学(8px 圆角 + 弱阴影 + SVG 几何浮动)、海洋青主色、系统字体优先，适合 B 端 SaaS 产品介绍、商务提案、客户案例、销售面客演示；配套 13 个 `C01-C13` 锁定版式和默认薪人薪事 logo。
+- **Style C：企家有道企业风 / qjyd-corp**。圆角企业 SaaS 美学(8px 圆角 + 弱阴影 + SVG 几何浮动)、海洋青主色、系统字体优先，适合 B 端 SaaS 产品介绍、商务提案、客户案例、销售面客演示；配套 16 个 `C01-C16` 锁定版式（C14 Statement 主张页 / C15 Status Duo 成果对照 / C16 Bullet Manifest 要点墙 三个对内同步场景版式）和默认薪人薪事 logo。
 
 > 本 skill 基于 [op7418/guizang-ppt-skill](https://github.com/op7418/guizang-ppt-skill)(AGPL-3.0)二次开发，在原有 Style A 电子杂志风、Style B 瑞士国际主义风之上，新增了 Style C 企家有道企业风(qjyd-corp)以及一些工程化改造。
 
@@ -127,7 +127,7 @@ npx skills add https://github.com/AngChow/ang-ppt-skill --skill ang-ppt-skill
 - 📐 **横向左右翻页**：键盘 ← → / 滚轮 / 触屏滑动 / 底部圆点 / ESC 索引
 - 🧩 **Style A 10 种布局**：封面、章节、数据大字报、图文、图片网格、Pipeline、对比等
 - 🧱 **Style B 22 种锁定版式**：Cover、Statement、KPI Tower、Loop Diagram、Duo Compare、Image Hero、Closing Manifesto 等
-- 🟢 **Style C 13 种企业版式**：Cover hero、章节封、议程目录、大数字 KPI、三段 KPI、时间轴、4 卡矩阵、图文左右、大图全屏、引言金句、对比表、团队介绍、Thank You
+- 🟢 **Style C 16 种企业版式**：Cover hero、章节封、议程目录、大数字 KPI、三段 KPI、时间轴、4 卡矩阵、图文左右、大图全屏、引言金句、对比表、团队介绍、Thank You **+ Statement 主张页 / Status Duo 成果瓶颈对照 / Bullet Manifest 要点墙**（对内同步场景）
 - 🎨 **主题色预设**：Style A 5 套电子墨水主题，Style B 4 套瑞士高饱和锚点色，Style C 4 套企业 SaaS 主题(薄荷企业 / 青墨科技 / 暖橙提案 / 深空述职)
 - 🖼 **Codex 可选配图流程**：可用 GPT-Image 2.0 / GPT-M 2.0 生成纪实照片、信息图、流程图、系统关系图、UI 情景图，并按模板比例插入
 - 📰 **多平台封面**：可用同一套视觉规则生成公众号 21:9、公众号分享卡 1:1、小红书 3:4、视频号横版等封面
@@ -243,13 +243,15 @@ node scripts/validate-swiss-deck.mjs path/to/index.html
 
 Style C 是面向 B 端商务场景的"企业 SaaS 美学"，**默认产品锚定为薪人薪事**(海洋青 `#00BFA5` + 默认 logo `assets/qjyd-corp/xrxs-logo.png`)，也支持替换为其他企业 logo 与品牌主色。
 
-- **13 个具名版式**：`C01` 封面 hero / `C02` 章节封 / `C03` 议程目录 / `C04` 大数字 KPI / `C05` 三段 KPI / `C06` 时间轴 / `C07` 4 卡矩阵 / `C08` 图文左右 / `C09` 大图全屏 / `C10` 引言金句 / `C11` 数据对比表 / `C12` 团队介绍 / `C13` Thank You
+适用场景从纯销售提案扩展到**周报 / 月报 / 复盘 / 团队同步**等对内场景——C14/C15/C16 三个新版式专门解决"纯文字主张、成果/瓶颈对照、要点墙"等无图内容的排版问题，避免硬塞图片占位。
+
+- **16 个具名版式**：`C01` 封面 hero / `C02` 章节封 / `C03` 议程目录 / `C04` 大数字 KPI / `C05` 三段 KPI / `C06` 时间轴 / `C07` 4 卡矩阵 / `C08` 图文左右 / `C09` 大图全屏 / `C10` 引言金句 / `C11` 数据对比表 / `C12` 团队介绍 / `C13` Thank You / `C14` Statement 主张页 / `C15` Status Duo 成果对照 / `C16` Bullet Manifest 要点墙
 - **4 套主题色**：🌿 薄荷企业(默认 / 通用) · 🌊 青墨科技(技术分享) · 🌅 暖橙提案(销售提案) · 🌌 深空述职(职级评审 / 述职 / 反色主题)
 - **圆角企业 SaaS 美学**：8px 卡片圆角 + 弱阴影 + SVG 几何浮动装饰，**没有** WebGL 背景(渲染开销低，会议室投屏更稳)
 - **系统字体优先**：PingFang SC + Helvetica Neue，无 Google Fonts CDN 依赖，内网/弱网环境最稳
 - **默认 logo 槽位**：封面 C01 右侧、Thank You C13 右侧默认走 `./images/logo.png`，加载失败回退到 SKILL 内置的 `xrxs-logo.png`(薪人薪事 logo，512×512 透明 PNG)
 - **图片占位 vs 真实图分离**：模板默认放 `.qjyd-img-placeholder`(成品级占位)，用户给图后整块替换为 `<img class="qjyd-img-fit">`
-- **强红线**：17 条生成红线写在 `SKILL.md` 中，涵盖容器对齐、入场动效、图片父子契约、accent 色一致性等；qjyd-corp 不支持像 Style B 那样的脚本校验，但所有 `<section>` 都必须带 `data-layout="Cxx"`
+- **强红线**：19 条生成红线写在 `SKILL.md` 中，涵盖容器对齐、入场动效、图片父子契约、accent 色一致性、placeholder 不是版式兜底等；qjyd-corp 不支持像 Style B 那样的脚本校验，但所有 `<section>` 都必须带 `data-layout="Cxx"`
 
 适合场景：**SaaS 产品介绍 / 商务提案 / 客户案例 / 销售面客演示 / 团队周报 / 季度业绩汇报**。
 
@@ -326,7 +328,7 @@ ang-ppt-skill/
     ├── components.md     ← 组件手册(字体、色、网格、图标、callout、stat、pipeline)
     ├── layouts.md        ← Style A · 10 种页面布局骨架(可直接粘贴)
     ├── layouts-swiss.md  ← Style B · 22 种瑞士风锁定版式
-    ├── layouts-corp.md   ← Style C · 13 种企业风锁定版式
+    ├── layouts-corp.md   ← Style C · 16 种企业风锁定版式
     ├── swiss-layout-lock.md ← 瑞士风还原度和版式硬约束
     ├── swiss-map-component.md ← Style B · S08 地图扩展组件(MapLibre)
     ├── themes.md         ← Style A · 5 套主题色预设(只能选不能自定义)
@@ -438,7 +440,7 @@ Style C 从 `references/themes-corp.md` 里选一套，**不允许自定义 hex 
 直接在目标项目的 `images/logo.png` 放你自己的产品 logo 即可，模板会优先加载 `./images/logo.png`，加载失败时才 fallback 到 SKILL 内置的薪人薪事 logo，不会破图。同时建议改一下 `themes-corp.md` 的 `--accent` 色对齐你的品牌色——但只能从 4 套预设里选，不接受自定义 hex(美学保护机制)。
 
 **为什么 Style C 不像 Style B 那样有强校验脚本?**
-Style C 的版式表达比 Style B 更灵活(C04/C07/C08 都允许卡片/chip 自由组合)，硬规则主要靠 SKILL.md 中的 17 条红线和 `layouts-corp.md` 的"2026-06 更新一~六"做工程化沉淀。`validate-swiss-deck.mjs` 也兼容 qjyd-corp，只校验每页都带了 `data-layout="Cxx"`。
+Style C 的版式表达比 Style B 更灵活(C04/C07/C08 都允许卡片/chip 自由组合)，硬规则主要靠 SKILL.md 中的 19 条红线和 `layouts-corp.md` 的"2026-06 更新一~九"做工程化沉淀。`validate-swiss-deck.mjs` 也兼容 qjyd-corp，只校验每页都带了 `data-layout="Cxx"`。
 
 **首次截图自检报"chromium_headless_shell-XXXX 不存在"怎么办?**
 这是 Codex.app 自带 playwright 的浏览器二进制还没下载，跟 skill 无关。按 [Prerequisites · 装机清单](#prerequisites-装机清单) 跑一次 install 即可，~94 MiB，80 秒搞定。
