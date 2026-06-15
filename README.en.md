@@ -415,7 +415,11 @@ If the user asks for an "enterprise-style deck", "business proposal", or "Xinren
 ## FAQ
 
 **Can it export to PPTX?**
-The main output is HTML. You can present it in a browser, screenshot it, or record it. PPTX conversion can be done as a separate workflow, but it is not the core path today.
+This skill only produces HTML decks. You can present them in a browser, screenshot them, or record a video.
+
+If you truly need a PPTX, you can ask an AI to convert the HTML into PPTX yourself, but the visual fidelity usually drops noticeably (animations, WebGL backgrounds, gradient text, SVG decorations and many other styles cannot be reproduced 1:1).
+
+I am building a companion skill `ang-html-to-ppt` that aims to convert the HTML into PPTX while preserving as much visual fidelity as possible (works together with this skill, supports only the templates shipped here). It will be published to GitHub once the polish is done — link will be added here when it is ready.
 
 **Why are custom colors not allowed?**
 The skill is designed for stable visual output. Arbitrary colors often break the system, so decks must use curated presets.
