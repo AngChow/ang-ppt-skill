@@ -199,8 +199,8 @@ Once installed, Claude Code auto-detects the skill. Trigger phrases:
 - "Editorial magazine style presentation"
 - "Electronic ink slides for my talk"
 - "Create a B2B SaaS product pitch deck"
-- "Make me a Xinrenxinshi-style sales proposal deck"
-- "qjyd-corp enterprise web deck"
+- "Make me a Xinrenxinshi-style sales proposal deck" / "Build me a Xinrenxinshi-style PPT"
+- "qjyd-corp enterprise web deck" / "qjyd enterprise style" / "Qijiayoudao corporate style"
 - "Create a 21:9 WeChat cover from this article"
 - "Create a 1:1 share card from this deck"
 

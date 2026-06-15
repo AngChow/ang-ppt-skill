@@ -201,8 +201,8 @@ git clone https://github.com/AngChow/ang-ppt-skill.git ~/.claude/skills/ang-ppt-
 - "editorial magazine style presentation"
 - "electronic ink 风格演讲 slides"
 - "帮我做一份 B 端 SaaS 产品介绍 PPT"
-- "薪人薪事风格的商务提案"
-- "qjyd-corp 企业风网页 PPT"
+- "薪人薪事风格的商务提案" / "做一份薪人薪事风格的 PPT" / "薪人薪事样式"
+- "企家有道风格" / "企家有道企业风" / "qjyd-corp 企业风网页 PPT"
 - "基于这篇文章做一张公众号 21:9 封面"
 - "基于这份 PPT 生成一张 1:1 分享卡"
 
