@@ -17,15 +17,15 @@
 
 > 本 skill 基于 [op7418/guizang-ppt-skill](https://github.com/op7418/guizang-ppt-skill)(AGPL-3.0)二次开发，在原有 Style A 电子杂志风、Style B 瑞士国际主义风之上，新增了 Style C 企家有道企业风(qjyd-corp)以及一些工程化改造。
 
-**旧主题 · Style A 电子杂志风**
+**Style A · 电子杂志风**
 
 ![Style A 电子杂志风效果展示](https://github.com/user-attachments/assets/5dc316a2-401c-4e37-9123-ea081b6ae470)
 
-**新主题 · Style B 瑞士国际主义**
+**Style B · 瑞士国际主义**
 
 ![Style B 瑞士国际主义效果展示](https://github.com/user-attachments/assets/8960e78c-69bb-4b7e-aa95-6fad64b70314)
 
-**新主题 · Style C 企家有道企业风(qjyd-corp / B 端 SaaS)**
+**Style C · 企家有道企业风(qjyd-corp / B 端 SaaS)**
 
 
 ![Style C 企家有道企业风效果展示](./assets/readme/style-c-cover.png)

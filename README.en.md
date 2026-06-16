@@ -15,15 +15,15 @@ It ships with three visual systems:
 
 > This skill is a derivative work based on [op7418/guizang-ppt-skill](https://github.com/op7418/guizang-ppt-skill) (AGPL-3.0). On top of the original Style A (editorial magazine) and Style B (Swiss international typography), it adds Style C — qjyd-corp enterprise — plus assorted engineering refinements.
 
-**Old Theme · Style A Editorial Magazine**
+**Style A · Editorial Magazine**
 
 ![Style A Editorial Magazine preview](https://github.com/user-attachments/assets/5dc316a2-401c-4e37-9123-ea081b6ae470)
 
-**New Theme · Style B Swiss International**
+**Style B · Swiss International**
 
 ![Style B Swiss International preview](https://github.com/user-attachments/assets/8960e78c-69bb-4b7e-aa95-6fad64b70314)
 
-**New Theme · Style C qjyd-corp Enterprise (B2B SaaS)**
+**Style C · qjyd-corp Enterprise (B2B SaaS)**
 
 
 ![Style C qjyd-corp enterprise preview](./assets/readme/style-c-cover.png)
