@@ -28,6 +28,10 @@ It ships with three visual systems:
 
 ![Style C qjyd-corp enterprise preview](./assets/readme/style-c-cover.png)
 
+> **2026-06 Added · Internal-sync layouts**: Beyond sales proposals, Style C also covers weekly / monthly reports, retros, and team syncs. Below, top to bottom: **C14 Statement** (text-only proposition) / **C15 Status Duo** (DONE vs NEXT two-column compare) / **C16 Bullet Manifest** (3×2 / 2×2 / 2×4 multi-column variants). All three are image-free and don't depend on customer assets.
+
+![Style C internal-sync layouts (C14 / C15 / C16)](./assets/readme/style-c-internal.png)
+
 ## Prerequisites
 
 ### Required

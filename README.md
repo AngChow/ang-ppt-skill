@@ -30,6 +30,10 @@
 
 ![Style C 企家有道企业风效果展示](./assets/readme/style-c-cover.png)
 
+> **2026-06 新增 · 对内同步版式合集**：销售提案以外，Style C 还覆盖周报 / 月报 / 复盘 / 团队同步等对内场景。下图依次为 **C14 Statement 主张页**(纯文字主张) / **C15 Status Duo 成果对照**(双栏 DONE vs NEXT) / **C16 Bullet Manifest 要点墙**(3×2 / 2×2 / 2×4 等多列变体)，整页无图、不依赖客户素材。
+
+![Style C 对内同步版式合集 (C14 / C15 / C16)](./assets/readme/style-c-internal.png)
+
 ## Prerequisites · 装机清单
 
 ### 必需

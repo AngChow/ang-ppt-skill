@@ -1403,15 +1403,33 @@
     gap:var(--sp-11); height:100%; align-items:stretch;
   }
   .qjyd-kpi-hero .num-side{
+    /* 2026-06 更新七: 不再用 space-evenly 强行均匀分布 (会让 chip 行被顶到离标题 90px+).
+       改成显式段间距 + margin 锚定: chip 紧贴顶 (跟着标题区), mega 居中, ba 贴底.
+       详见 layouts-corp.md "2026-06 更新七 (C04 间距反模式修复)" */
     display:flex; flex-direction:column;
-    gap:var(--sp-6);
-    justify-content:space-evenly;     /* chip · mega · before/after 在列高度内均匀分布 */
+    gap:var(--sp-7);                  /* 段间默认 32px, 不靠 evenly 撑开 */
+    justify-content:flex-start;
+  }
+  .qjyd-kpi-hero .num-side > .num-meta-row{ margin-top:0; }
+  /* mega + 副标 + ba 三段是同一个"KPI 组": chip 是元信息要紧贴标题 (在标题区),
+     KPI 组应该整体居中到剩余空间. 所以包一层 .qjyd-kpi-group, 整组 margin:auto 0.
+     不要给单个子元素 margin-top:auto / margin-bottom:auto, 否则会撑开组内间距. */
+  .qjyd-kpi-hero .num-side .qjyd-kpi-group{
+    display:flex; flex-direction:column; gap:var(--sp-7);   /* 32px: mega 副标 → ba 之间的呼吸 */
+    margin:auto 0;                /* 整组在 num-side 剩余空间内垂直居中 */
+  }
+  .qjyd-kpi-hero .num-side .qjyd-kpi-wrap{
+    display:flex; flex-direction:column; gap:var(--sp-4);
   }
   .qjyd-kpi-hero .ctx-side{
+    /* 2026-06 更新七 v2: ctx-side 用 flex-start + gap, 不再贴底
+       bullet 紧跟 case 卡, 留白自然落到 ctx-side 底部 (与左侧 ba-block 形成视觉呼应) */
     display:flex; flex-direction:column;
-    gap:var(--sp-6);
-    justify-content:space-evenly;     /* case 卡 · bullets 在列高度内均匀分布 */
+    gap:var(--sp-7);
+    justify-content:flex-start;
   }
+  /* bullet 与上方 case 卡之间总间距 ≈ 44px (gap sp-7 32 + margin-top sp-4 12) */
+  .qjyd-kpi-hero .ctx-side > .qjyd-bullet{ margin-top:var(--sp-4); }
 
   /* C04 左侧底部: before/after 对比条 */
   .qjyd-kpi-hero .ba-block{
@@ -1455,7 +1473,8 @@
   /* C04 ctx-side 三行 bullet 单独加大字号 (默认 .qjyd-bullet 偏小) */
   .qjyd-kpi-hero .ctx-side .qjyd-bullet{ gap:var(--sp-4); }
   .qjyd-kpi-hero .ctx-side .qjyd-bullet li{
-    font-size:clamp(16px, 1.18vw, 19px);
+    /* 2026-06 更新七 v2: bullet 字号略提 (用户反馈"适当增大") */
+    font-size:clamp(17px, 1.28vw, 21px);
     line-height:1.65;
     padding-left:26px;
   }
@@ -1641,7 +1660,9 @@
      这样横向 track 就能稳稳穿过所有 dot 中心,不再错位 */
   .qjyd-timeline{
     --tl-dot-size: 22px;
-    --tl-pad-top: calc(var(--sp-9) + var(--sp-9));  /* dot 距 timeline 顶端的距离, 整条向下推 */
+    /* 2026-06 更新十一: dot 行整体下移 (96px → 160px), 让时间轴重心更接近页面中线
+       内容行 (dot+year+title+desc) 高度 ~190px, 容器高度 ~565px, dot 行落在 y≈center 上方 80px */
+    --tl-pad-top: var(--sp-13);
     position:relative; display:grid;
     grid-template-columns:repeat(5,1fr);
     grid-template-rows:auto auto auto auto;
@@ -1659,7 +1680,8 @@
   }
   .qjyd-timeline .tl-node{
     display:flex; flex-direction:column; align-items:center;
-    gap:var(--sp-3); position:relative; z-index:1; padding:0 var(--sp-3);
+    /* 2026-06 更新十一: gap sp-3 → sp-4, dot↔year 略松 */
+    gap:var(--sp-4); position:relative; z-index:1; padding:0 var(--sp-3);
   }
   .qjyd-timeline .tl-dot{
     flex-shrink:0;
@@ -1682,13 +1704,20 @@
   }
   .qjyd-timeline .tl-node.current .tl-year{ color:var(--accent-dark); font-weight:500; }
   .qjyd-timeline .tl-title{
-    font-family:var(--sans-zh); font-weight:600; font-size:16px; color:var(--ink);
+    font-family:var(--sans-zh); font-weight:600; color:var(--ink);
     text-align:center;
-    margin-top:var(--sp-2);       /* 紧跟在 year 下方 */
+    /* 2026-06 更新十一: 16px 固定 → clamp 跟随缩放, 1600 宽下 ~21px */
+    font-size:clamp(18px, 1.35vw, 22px);
+    line-height:1.35;
+    margin-top:var(--sp-3);       /* sp-2 → sp-3, year↔title 略开 */
   }
   .qjyd-timeline .tl-desc{
-    font-family:var(--sans-zh); font-size:13px; color:var(--text-2);
-    text-align:center; line-height:1.5;
+    font-family:var(--sans-zh); color:var(--text-2);
+    text-align:center;
+    /* 2026-06 更新十一: 13px 固定 → clamp, 1600 宽下 ~17px */
+    font-size:clamp(15px, 1.1vw, 18px);
+    line-height:1.55;
+    margin-top:var(--sp-2);       /* title 与 desc 之间 4px 显式分隔 */
   }
 
   /* ========== C07 · 4 卡片 2x2 ========== */
@@ -2010,11 +2039,19 @@
      ============================================================ */
   .qjyd-status-duo{
     flex:1; display:grid;
+    /* 2026-06 更新十七: 改用 "max-width 限宽 + margin auto 居中 + 1fr 1px 1fr 内部填满".
+       这样 status-duo 的左右缘 = 标题容器的左右缘 (都用 var(--c15-track-w) 居中),
+       彻底消除 "标题 left=236 vs 左栏 left=212" 的 24px 错位.
+       栏宽仍保持 ~540px (1177-1-96)/2 = 540, 视觉与 v5 等价但基准统一. */
+    width:100%;
+    max-width:var(--c15-track-w, 1177px);
+    margin-left:auto;
+    margin-right:auto;
     grid-template-columns: 1fr 1px 1fr;
     column-gap:var(--sp-9);
-    align-items:center;             /* 修复: center 让双栏垂直居中, 解决底部留白过大 */
+    align-items:start;
     min-height:0;
-    padding:var(--sp-5) 0 var(--sp-6);
+    padding:var(--sp-10) 0 var(--sp-3);
   }
   .qjyd-status-duo .sd-rule{
     width:1px; background:var(--line);
@@ -2098,6 +2135,51 @@
     color:var(--text-3); line-height:1.5;
     border-top:1px solid var(--line);
   }
+  /* 2026-06 更新十三: 标题 + KPI 徽章并排, 填补标题右侧 215px 空白
+     .sd-headline = 容器 (左 title 右 badge), .sd-badge = 大数字徽章
+     2026-06 更新十五: 取消 justify-content:space-between (会把徽章顶到最右,
+     远离本栏标题, 视觉上像跨栏漂浮); 改成 flex-start + gap, 徽章紧跟标题. */
+  .qjyd-status-duo .sd-headline{
+    display:flex; align-items:flex-end;
+    justify-content:flex-start;
+    /* 2026-06 更新十六: gap sp-7 (32) → sp-9 (48), 在 41.6px 标题 + 57.6px 徽章
+       这种大字号组合下, 32px 略挤; 48px ≈ 标题字号 1.1 倍, 呼吸感更从容 */
+    gap:var(--sp-9);
+    flex-wrap:wrap;
+  }
+  .qjyd-status-duo .sd-headline .sd-title{
+    /* 不让 title flex-grow, 让其按内容自然宽度, badge 紧跟在标题的真实右边缘 */
+    flex:0 0 auto; min-width:0;
+  }
+  .qjyd-status-duo .sd-badge{
+    flex-shrink:0; display:flex; flex-direction:column;
+    align-items:flex-end; gap:2px; line-height:1;
+    padding-bottom:6px;             /* 让 badge 视觉底线与 title 末行 baseline 略接近 */
+  }
+  .qjyd-status-duo .sd-badge .sd-badge-num{
+    font-family:var(--sans); font-weight:700;
+    font-size:clamp(40px, 3.6vw, 64px);
+    letter-spacing:-.02em; line-height:1;
+  }
+  .qjyd-status-duo .sd-badge .sd-badge-unit{
+    font-size:clamp(18px, 1.4vw, 24px);
+    font-weight:600; margin-left:2px;
+  }
+  .qjyd-status-duo .sd-badge .sd-badge-label{
+    font-family:var(--sans-zh); font-size:13px;
+    color:var(--text-3); letter-spacing:.04em;
+    margin-top:6px;
+  }
+  /* 左栏 DONE 徽章: 海洋青 */
+  .qjyd-status-duo .sd-col.done .sd-badge .sd-badge-num,
+  .qjyd-status-duo .sd-col.done .sd-badge .sd-badge-unit{
+    color:var(--accent-dark);
+  }
+  /* 右栏 NEXT 徽章: 中性灰 (遵守 "不用红色" 戒律) */
+  .qjyd-status-duo .sd-col.next .sd-badge .sd-badge-num,
+  .qjyd-status-duo .sd-col.next .sd-badge .sd-badge-unit{
+    color:var(--text-1);
+  }
 
   /* ============================================================
      C16 · Bullet Manifest (要点墙, 3 列纯文字)
@@ -2108,10 +2190,25 @@
     flex:1; display:grid;
     grid-template-columns:repeat(3, minmax(0, 1fr));
     column-gap:var(--sp-9);
-    row-gap:var(--sp-9);              /* 行间距加大, 单元呼吸感 */
-    align-content:center;             /* 修复: 整体网格垂直居中, 解决底部留白过大 */
+    /* 2026-06 更新十九: row-gap 从 sp-9 (48px) 加到 sp-11 (80px).
+       原因: align-content:center 下, 两行内容总高 ~395px, grid 容器 ~646px,
+       多余 ~250px 被居中 → 上下留白各 ~125px, 而行间距只有 48px,
+       视觉读感"行间挤、整页空". 加大 row-gap 后行间从 48 → 80,
+       上下留白从各 ~125 → 各 ~110, 视觉密度更接近 1:1. */
+    row-gap:var(--sp-11);
+    align-content:center;             /* 整体网格垂直居中 */
     padding:var(--sp-5) 0 var(--sp-6);
     min-height:0;
+  }
+  /* C16 列数变体: 4 项用 cols-2 (2x2), 8 项用 cols-4 (2x4)
+     默认 3 列适合 6 / 9 项; 4 项用默认会出 3+1 孤儿. */
+  .qjyd-bullet-manifest.cols-2{
+    grid-template-columns:repeat(2, minmax(0, 1fr));
+    column-gap:var(--sp-10);          /* 2 列时列距更大, 避免左右栏太挤 */
+  }
+  .qjyd-bullet-manifest.cols-4{
+    grid-template-columns:repeat(4, minmax(0, 1fr));
+    column-gap:var(--sp-7);           /* 4 列时收窄列距, 给单元更多宽度 */
   }
   .qjyd-bullet-manifest .bm-item{
     display:flex; flex-direction:column;
@@ -2375,27 +2472,33 @@
 </section>
 
 <section class="slide light" data-layout="C04" data-animate="kpi-tower">
-  <div style="display:flex;flex-direction:column;gap:var(--sp-4);margin-bottom:var(--sp-9)" data-anim>
+  <!-- 2026-06 更新七: chip 行从 .num-side 内部上移到标题区,
+       语义上 chip 是"标题的 KPI 口径标签", 不是 num-side 的并列锚点.
+       margin-bottom 由 sp-9 (48px) 收紧为 sp-8 (40px), 因为 chip 已经吃了一半节奏 -->
+  <div style="display:flex;flex-direction:column;gap:var(--sp-4);margin-bottom:var(--sp-8)" data-anim>
     <div class="qjyd-meta">CHAPTER 02 · KEY METRIC</div>
     <h1 class="qjyd-h1">客户业务效率提升</h1>
+    <div class="num-meta-row" style="margin-top:var(--sp-3)">
+      <span class="nm-chip">新消费 · 独角兽</span>
+      <span class="nm-chip">500 人规模</span>
+      <span class="nm-chip">招聘模块</span>
+    </div>
   </div>
   <div class="qjyd-kpi-hero" style="flex:1">
     <div class="num-side" data-anim>
-      <!-- 顶: 客户标签 -->
-      <div class="num-meta-row">
-        <span class="nm-chip">新消费 · 独角兽</span>
-        <span class="nm-chip">500 人规模</span>
-        <span class="nm-chip">招聘模块</span>
-      </div>
-      <!-- 中: 巨数 + 副标 -->
-      <div style="display:flex;flex-direction:column;gap:var(--sp-4)">
-        <div class="qjyd-kpi-mega">
-          65<span class="qjyd-kpi-unit">%</span>
+      <!-- KPI 组 (.qjyd-kpi-group): mega + 副标 + ba 是同一个语义组,
+           靠 margin:auto 0 整组在 num-side 剩余空间内垂直居中.
+           组内段间距由 group 自身的 gap (sp-6) 控制, 不再用 .num-side 的 gap. -->
+      <div class="qjyd-kpi-group">
+        <!-- 中: 巨数 + 副标 -->
+        <div class="qjyd-kpi-wrap">
+          <div class="qjyd-kpi-mega">
+            65<span class="qjyd-kpi-unit">%</span>
+          </div>
+          <div class="qjyd-h2" style="color:var(--text-2);font-weight:500">招聘流程平均缩短</div>
         </div>
-        <div class="qjyd-h2" style="color:var(--text-2);font-weight:500">招聘流程平均缩短</div>
-      </div>
-      <!-- 底: before / after 对比 -->
-      <div class="ba-block">
+        <!-- 底: before / after 对比 -->
+        <div class="ba-block">
         <div class="ba-row">
           <span class="ba-label">引入前</span>
           <span class="ba-old">18<span class="ba-unit">天</span></span>
@@ -2404,6 +2507,7 @@
           <span class="ba-label" style="min-width:auto;margin-left:auto">引入后</span>
         </div>
         <div class="ba-bar"><i style="width:65%"></i></div>
+        </div>
       </div>
     </div>
     <div class="ctx-side" data-anim>
@@ -2418,6 +2522,9 @@
         <li>简历自动解析 · 智能去重与画像匹配</li>
         <li>面试官分时段在线协同, 评分实时同步</li>
         <li>Offer 审批走电子流, HR 不再追着签字</li>
+        <li>招聘数据看板按周推送, 进度与瓶颈一目了然</li>
+        <li>入职手续全线上化, 新人 Day 1 即刻上手</li>
+        <li>HR 工时投入下降 40%, 团队聚焦人才培养</li>
       </ul>
     </div>
   </div>
@@ -2478,13 +2585,13 @@
       <div class="tl-dot"></div>
       <div class="tl-year">2021</div>
       <div class="tl-title">招聘 & 绩效</div>
-      <div class="tl-desc">一体化人才管理</div>
+      <div class="tl-desc">一体化人才管理<br>从入职到晋升</div>
     </div>
     <div class="tl-node">
       <div class="tl-dot"></div>
       <div class="tl-year">2024</div>
       <div class="tl-title">薪灵 AI 上线</div>
-      <div class="tl-desc">对话式 HR 助手</div>
+      <div class="tl-desc">对话式 HR 助手<br>分钟级响应</div>
     </div>
     <div class="tl-node current">
       <div class="tl-dot"></div>
@@ -2572,7 +2679,9 @@
              - alt 写"截图主体 + 关键信息",方便无障碍 + 截屏检索
            推荐图片比例 ≈ 1:1 ~ 1.2:1, 偏方形最稳;
            竖图(高 > 宽)会被 .qjyd-img-fit 自动裁底部(object-position:top).
-           --> 占位写法见 C09 .ih-right
+           占位写法 (用户没提供图时) 见 C09 .ih-right 那块.
+           ⚠️ 注释体内不要出现连续两个减号 (会被 HTML 解析器误判为注释结束),
+              导致下面的文字被当 DOM 文本渲染到页面里 (历史 bug, 别再犯).
            ============================================================ -->
       <img class="qjyd-img-fit" src="qjyd-corp/c08-xinling.jpg"
            alt="cinlyn 智能助手对话界面: 自然语言提问 / AI 自动拆分入职流程为 5 步规划" />
@@ -2766,10 +2875,13 @@
   </div>
 </section>
 
-<section class="slide light" data-layout="C15" data-animate="status-duo">
+<section class="slide light" data-layout="C15" data-animate="status-duo" style="--c15-track-w:1177px">
   <!-- C15 · Status Duo (成果 / 瓶颈对照页, 无图)
        规则: 左 DONE = accent 海洋青, 右 NEXT = 中性灰 (不用红色)
-       每栏最多 4 条 bullet, 第一行可加粗主张, 整页无图 -->
+       每栏最多 4 条 bullet, 第一行可加粗主张, 整页无图
+       2026-06 更新十八: 标题区还原到画布最左 (left=88, 与 C04/C06/C16 等其他页一致),
+       仅 status-duo 保持整组居中 (left=212). 这是有意的"标题画布对齐 + 主内容整组居中"
+       版式特征: 标题保持页面级一致性, 主内容用居中表达"双栏对照"结构语义. -->
   <div style="display:flex;flex-direction:column;gap:var(--sp-4);margin-bottom:var(--sp-7)" data-anim>
     <div class="qjyd-meta">PROGRESS · 知识自沉淀 3.0</div>
     <h1 class="qjyd-h1">本周成果与下一步</h1>
@@ -2777,18 +2889,30 @@
   <div class="qjyd-status-duo">
     <div class="sd-col done">
       <div class="sd-tag"><span class="sd-mark"></span>DONE · 本周成果</div>
-      <div class="sd-title">3.0 优化完成<br>本周正式启用</div>
+      <div class="sd-headline">
+        <div class="sd-title">3.0 优化完成<br>本周正式启用</div>
+        <div class="sd-badge">
+          <div><span class="sd-badge-num">85</span><span class="sd-badge-unit">%</span></div>
+          <div class="sd-badge-label">沉淀可直接入库</div>
+        </div>
+      </div>
       <ul class="sd-points">
-        <li><b>85%</b> · 沉淀可直接入库知识占比</li>
         <li><b>100%</b> · 待人工审核分类准确率</li>
         <li>本周起进入正式运营周期</li>
         <li>话后批量沉淀已稳定运行</li>
       </ul>
+      <div class="sd-foot">3.0 已稳定运行一周, 进入常态化沉淀阶段。</div>
     </div>
     <div class="sd-rule"></div>
     <div class="sd-col next">
       <div class="sd-tag"><span class="sd-mark"></span>NEXT · 待打通</div>
-      <div class="sd-title">知识全自动入库<br>仍差最后一环</div>
+      <div class="sd-headline">
+        <div class="sd-title">知识全自动入库<br>仍差最后一环</div>
+        <div class="sd-badge">
+          <div><span class="sd-badge-num">1</span><span class="sd-badge-unit">项</span></div>
+          <div class="sd-badge-label">仍待开放接口</div>
+        </div>
+      </div>
       <ul class="sd-points">
         <li>低代码平台知识库接口尚未开放</li>
         <li>当前依赖 <b>手动上传</b> 完成同步</li>
