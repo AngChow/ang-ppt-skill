@@ -28,10 +28,6 @@ It ships with three visual systems:
 
 ![Style C qjyd-corp enterprise preview](./assets/readme/style-c-cover.png)
 
-> **2026-06 Added · Internal-sync layouts**: Beyond sales proposals, Style C also covers weekly / monthly reports, retros, and team syncs. Below, top to bottom: **C14 Statement** (text-only proposition) / **C15 Status Duo** (DONE vs NEXT two-column compare) / **C16 Bullet Manifest** (3×2 / 2×2 / 2×4 multi-column variants). All three are image-free and don't depend on customer assets.
-
-![Style C internal-sync layouts (C14 / C15 / C16)](./assets/readme/style-c-internal.png)
-
 ## Prerequisites
 
 ### Required
@@ -253,7 +249,7 @@ The scope extends beyond pure sales proposals to **weekly reports / monthly repo
 - **System-font first**: PingFang SC + Helvetica Neue with no Google Fonts CDN dependency; safest for intranet / restricted networks
 - **Default logo slot**: cover C01 right side and Thank You C13 right side load `./images/logo.png` first, falling back to the bundled `xrxs-logo.png` (Xinrenxinshi logo, 512×512 transparent PNG)
 - **Image placeholder vs real image separation**: templates ship with `.qjyd-img-placeholder` (production-grade placeholders); replace the entire block with `<img class="qjyd-img-fit">` once real images arrive
-- **Strict redlines**: 19 generation redlines documented in `SKILL.md`, covering container alignment, entrance motion, image parent-child contracts, accent color consistency, "placeholder is not a layout fallback", etc. qjyd-corp does not have a standalone validator like Style B, but every `<section>` must carry `data-layout="Cxx"`
+- **Strict redlines**: 24 generation redlines documented in `SKILL.md`, covering container alignment, entrance motion, image parent-child contracts, accent color consistency, "placeholder is not a layout fallback", two-rail grid, etc. qjyd-corp does not have a standalone validator like Style B, but every `<section>` must carry `data-layout="Cxx"`
 
 Best for: **SaaS product intros / sales proposals / customer cases / client-facing demos / team weekly reports / quarterly business reviews**.
 
@@ -443,7 +439,7 @@ Run the install command again, or run `git pull` inside your local skill directo
 Just drop your product logo at `images/logo.png` inside the target project. The template loads `./images/logo.png` first and only falls back to the SKILL-bundled Xinrenxinshi logo if it fails to load — the image will never break. We also recommend tuning `themes-corp.md`'s `--accent` to match your brand — but only by picking one of the 4 presets; no custom hex (aesthetic protection mechanism).
 
 **Why doesn't Style C have a strict validator like Style B?**
-Style C's layout language is more flexible than Style B (C04 / C07 / C08 all allow free composition of cards / chips). Hard rules are mainly enforced by the 19 red lines in SKILL.md and the "2026-06 Update I~IX" sections in `layouts-corp.md`. `validate-swiss-deck.mjs` is also compatible with qjyd-corp — it just verifies that every page carries `data-layout="Cxx"`.
+Style C's layout language is more flexible than Style B (C04 / C07 / C08 all allow free composition of cards / chips). Hard rules are mainly enforced by the 24 red lines in SKILL.md and the layout-constraint sections in `layouts-corp.md`. `validate-swiss-deck.mjs` is also compatible with qjyd-corp — it just verifies that every page carries `data-layout="Cxx"`.
 
 **First screenshot self-check fails with "chromium_headless_shell-XXXX not found" — what now?**
 That's Codex.app's bundled playwright not having downloaded its browser binary yet — unrelated to the skill itself. Just run the install once per [Prerequisites](#prerequisites) — ~94 MiB, takes about 80 seconds.
