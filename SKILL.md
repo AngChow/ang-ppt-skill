@@ -532,7 +532,7 @@ cp "<SKILL_ROOT>/assets/template-corp.html" "项目/XXX/ppt/index.html"
 | 你手里有什么内容 | 推荐版式 |
 |---|---|
 | 1 个核心数字 + 上下文 + before/after | C04 KPI Hero |
-| 3 个平级数字（KPI 三联） | C05 KPI Triple |
+| 3 个平级数字 / 概念型 KPI（三联） | C05 KPI Triple（数字单行；概念型用 `.kpi-num-stack` 显式两行） |
 | 4 个等权块（带图标 / chip / 子能力） | C07 cards-2x2 |
 | 4 / 6 / 8 / 9 个纯文字要点（编号 + 标题 + 描述 + 状态） | **C16**（4→`.cols-2` / 6/9→默认 3 列 / 8→`.cols-4`） |
 | 时间序列 4-6 节点 | C06 Timeline |
@@ -544,6 +544,9 @@ cp "<SKILL_ROOT>/assets/template-corp.html" "项目/XXX/ppt/index.html"
 | 3-4 个人物卡片 | C12 Team |
 | 议程 4-6 行 | C03 Agenda |
 | 章节切分 | C02 Chapter / C01 Cover / C13 Thank You |
+
+**C05 KPI Triple 生成规则（qjyd-corp）**：数字型 KPI 保持默认单行 `.kpi-num` + `.kpi-sfx`（如 `70%`、`15家`）；概念型 KPI（如 `AI/中台`、`HMOS/升级`、`移动端/底盘`）使用 `.kpi-num.kpi-num-stack` + `.kpi-main` / `.kpi-sfx` 显式两行。只要同一页任一项需要两行，三项都必须统一使用 stack，禁止依赖自然换行造成 label 基线错位。
+
 
 **风格 C 选版式的常见误区**：
 - ❌ "这是周报，C07 / C08 / C10 / C12 是销售提案专用，不能用" —— **错**。所有版式都是通用的，看内容形状不看主题。

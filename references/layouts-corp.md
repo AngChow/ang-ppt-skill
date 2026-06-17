@@ -97,7 +97,7 @@
 | C02 | 章节封 | `chapter` | 1 | 否 | 章节号 + 标题 |
 | C03 | 议程目录 | `agenda` | 4-6 | 否 | 编号列表 |
 | C04 | 大数字 KPI | `kpi-tower` | **恰 1** 个核心 KPI | 否 | 大数字 + before/after + 上下文卡片 |
-| C05 | 三段 KPI | `kpi-triple` | **恰 3** | 否 | 3 个等权数字 + 标签 |
+| C05 | 三段 KPI | `kpi-triple` | **恰 3** | 否 | 3 个等权数字 / 概念型 KPI + 标签 |
 | C06 | 时间轴 | `timeline` | 4-6 节点 | 否 | 年份/阶段序列 |
 | C07 | 4 卡片矩阵 | `cards-2x2` | **恰 4** | 否（icon 用 inline SVG） | 标题 + 描述 + chip + 标签 |
 | C08 | 图文左右 | `split-reveal` | 1 段 | **是 · 必填** | 文字 + 配图 |
@@ -113,7 +113,7 @@
 > **决策路径速查**：
 >
 > - "我要放 N 项要点" → 看 C16 的 `.cols-N` 容量表（4 项→`.cols-2` / 6 项→默认 3 列 / 9 项→3×3）
-> - "我有 1 个核心数字" → C04；"我有 3 个平级数字" → C05；"我有 4 个等权模块" → C07
+> - "我有 1 个核心数字" → C04；"我有 3 个平级数字 / 概念型 KPI" → C05；"我有 4 个等权模块" → C07
 > - "我有 1 段话想强调" → 没图 C10 / C14；有图 C08 / C09
 > - "我要左右对照" → C15 Status Cards（2 列）；如果一侧是主成果、一侧是行动栏 → C15-ASYM；"我要 3 列对比" → C11
 > - "我要时间线" → C06；"我要章节封" → C02；"我要议程" → C03
@@ -271,11 +271,67 @@
 
 ## C05 · 三段 KPI
 
-**用途**：横向并排 3 个核心数据。
+**用途**：横向并排 3 个平级 KPI。KPI 可以是纯数字（如 `70% / 15家 / 0客诉`），也可以是概念型战略锚点（如 `AI / 中台`、`HMOS / 升级`、`移动端 / 底盘`）。
 
-**骨架**：3 列 grid，每列 `.kpi-cell`（数+label+desc），第三个加 `.accent` class 做高亮强调列。
+**骨架**：3 列 grid，每列 `.kpi-cell`（num + label + desc），第三个加 `.accent` class 做高亮强调列。
 
-**关键类**：`.qjyd-kpi-triple`、`.kpi-cell`、`.kpi-cell.accent`、`.kpi-num`、`.kpi-sfx`、`.kpi-label`、`.kpi-desc`。
+**关键类**：`.qjyd-kpi-triple`、`.kpi-cell`、`.kpi-cell.accent`、`.kpi-num`、`.kpi-num-stack`、`.kpi-main`、`.kpi-sfx`、`.kpi-label`、`.kpi-desc`。
+
+### 写法 A · 数字型 KPI（默认单行）
+
+用于明确数值 + 单位的三联数据，保持模板原有单行节奏：
+
+```html
+<div class="qjyd-kpi-triple" data-anim>
+  <div class="kpi-cell">
+    <div class="kpi-num">70<span class="kpi-sfx">%</span></div>
+    <div class="kpi-label">问题解决时间缩短</div>
+    <div class="kpi-desc">全链路日志与异常监控让线上问题快速定位。</div>
+  </div>
+  <!-- 另外两项同结构 -->
+</div>
+```
+
+### 写法 B · 概念型 KPI（显式两行）
+
+用于三个平级战略能力 / 平台能力 / 模块锚点。只要其中任一项需要换成两行，**三项都必须使用 `.kpi-num-stack` 显式两行**，避免出现“第一项单行、后两项两行”导致 label 基线错位。
+
+```html
+<div class="qjyd-kpi-triple" data-anim>
+  <div class="kpi-cell">
+    <div class="kpi-num kpi-num-stack">
+      <span class="kpi-main">AI</span>
+      <span class="kpi-sfx">中台</span>
+    </div>
+    <div class="kpi-label">从量变到质变</div>
+    <div class="kpi-desc">合规基础设施、Agent 能力、MCP + ReAct 架构共同形成智能平台基座。</div>
+  </div>
+  <div class="kpi-cell">
+    <div class="kpi-num kpi-num-stack">
+      <span class="kpi-main">HMOS</span>
+      <span class="kpi-sfx">升级</span>
+    </div>
+    <div class="kpi-label">从套壳到原生</div>
+    <div class="kpi-desc">可观测、私有化、Native 化与体验创新支撑客户价值。</div>
+  </div>
+  <div class="kpi-cell accent">
+    <div class="kpi-num kpi-num-stack">
+      <span class="kpi-main">移动端</span>
+      <span class="kpi-sfx">底盘</span>
+    </div>
+    <div class="kpi-label">从响应到稳定供给</div>
+    <div class="kpi-desc">双端并行交付、系统适配、安全合规和国际化形成确定性承接能力。</div>
+  </div>
+</div>
+```
+
+**C05 换行规则（重要）**：
+
+1. ✅ 数字型 KPI 默认使用单行 `.kpi-num`，单位继续用 `.kpi-sfx` 上标式小字。
+2. ✅ 概念型 KPI 使用 `.kpi-num.kpi-num-stack` + `.kpi-main` / `.kpi-sfx` 两段式结构；stack 会比默认数字型 KPI 略小一档，保留冲击力但避免两行文字压迫卡片留白。
+3. ✅ 同一页三项必须统一：要么全部单行数字型，要么全部 stack 两行概念型。
+4. ❌ 不要依赖自然换行（例如 `AI中台` 单行、`移动端底盘` 自然两行）——这会让 `.kpi-label` 和 `.kpi-desc` 的基线错位。
+5. ❌ 不要为了凑两行给单个数字型 KPI 加 `<br>`；数字三联和概念三联是同一 C05 的两种内部写法，不是两个独立版式。
 
 ---
 
