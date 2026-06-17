@@ -1486,7 +1486,7 @@
     display:flex; gap:var(--sp-5); align-items:center; flex-wrap:wrap;
   }
   .qjyd-kpi-hero .num-meta-row .nm-chip{
-    font-family:var(--sans-zh); font-size:13px;
+    font-family:var(--sans-zh); font-size:15px;
     color:var(--accent-dark);
     background:var(--accent-soft);
     border:1px solid rgba(0,191,165,.22);
@@ -1651,7 +1651,7 @@
   }
   .qjyd-kpi-triple .kpi-cell.accent .kpi-label{ color:#fff; }
   .qjyd-kpi-triple .kpi-desc{
-    font-family:var(--sans-zh); font-size:13px; color:var(--text-2); line-height:1.6;
+    font-family:var(--sans-zh); font-size:15px; color:var(--text-2); line-height:1.6;
   }
   .qjyd-kpi-triple .kpi-cell.accent .kpi-desc{ color:rgba(255,255,255,.88); }
 
@@ -1747,7 +1747,7 @@
     padding-top:var(--sp-5);
   }
   .qjyd-cards-2x2 .module-card .m-chip{
-    font-family:var(--sans-zh); font-size:13px; line-height:1; letter-spacing:.01em;
+    font-family:var(--sans-zh); font-size:15px; line-height:1; letter-spacing:.01em;
     color:var(--accent-dark);
     background:var(--accent-soft);
     border:1px solid rgba(0,191,165,.22);
@@ -1798,7 +1798,7 @@
   .qjyd-image-hero .ih-tag{
     display:inline-block; padding:6px 14px;
     background:var(--paper-soft); border:1px solid rgba(0,191,165,.18);
-    border-radius:99px; font-family:var(--sans-zh); font-size:13px; color:var(--text-2);
+    border-radius:99px; font-family:var(--sans-zh); font-size:15px; color:var(--text-2);
   }
   .qjyd-image-hero .ih-tag.accent{
     background:var(--accent); color:var(--accent-on); border-color:transparent; font-weight:500;
@@ -1930,7 +1930,7 @@
     font-family:var(--sans-zh); font-weight:600; font-size:22px; color:var(--ink); line-height:1.2;
   }
   .qjyd-team .t-title{
-    font-family:var(--sans-zh); font-size:13px; color:var(--accent-dark); font-weight:500;
+    font-family:var(--sans-zh); font-size:15px; color:var(--accent-dark); font-weight:500;
     letter-spacing:.02em;
   }
   .qjyd-team .t-bio{
@@ -1982,7 +1982,9 @@
     list-style:none; padding:0; margin:0;
     display:grid;
     grid-template-columns:repeat(2, minmax(0, 1fr));
-    column-gap:var(--sp-9);
+    /* 2026-06 更新二十一: C15 徽章放大后, 双栏之间需要略微增加呼吸感;
+       column-gap sp-9 (48) → sp-10 (64), 只加一点, 避免压窄单栏导致标题换行. */
+    column-gap:var(--sp-10);
     row-gap:var(--sp-6);
     max-width:1280px;
   }
@@ -2048,7 +2050,9 @@
     margin-left:auto;
     margin-right:auto;
     grid-template-columns: 1fr 1px 1fr;
-    column-gap:var(--sp-9);
+    /* 2026-06 更新二十一: C15 徽章放大后, 双栏之间需要略微增加呼吸感;
+       column-gap sp-9 (48) → sp-10 (64), 只加一点, 避免压窄单栏导致标题换行. */
+    column-gap:var(--sp-10);
     align-items:start;
     min-height:0;
     padding:var(--sp-10) 0 var(--sp-3);
@@ -2143,8 +2147,10 @@
     display:flex; align-items:flex-end;
     justify-content:flex-start;
     /* 2026-06 更新十六: gap sp-7 (32) → sp-9 (48), 在 41.6px 标题 + 57.6px 徽章
-       这种大字号组合下, 32px 略挤; 48px ≈ 标题字号 1.1 倍, 呼吸感更从容 */
-    gap:var(--sp-9);
+       这种大字号组合下, 32px 略挤; 48px ≈ 标题字号 1.1 倍, 呼吸感更从容
+       2026-06 更新二十: 用户反馈 C15 徽章与左侧标题距离仍略近, 且 85% / 1项
+       需要承担更强的数据锚点角色; gap 提升到 sp-11 (80), 徽章字号同步放大. */
+    gap:var(--sp-11);
     flex-wrap:wrap;
   }
   .qjyd-status-duo .sd-headline .sd-title{
@@ -2158,15 +2164,15 @@
   }
   .qjyd-status-duo .sd-badge .sd-badge-num{
     font-family:var(--sans); font-weight:700;
-    font-size:clamp(40px, 3.6vw, 64px);
+    font-size:clamp(52px, 5vw, 88px);
     letter-spacing:-.02em; line-height:1;
   }
   .qjyd-status-duo .sd-badge .sd-badge-unit{
-    font-size:clamp(18px, 1.4vw, 24px);
+    font-size:clamp(22px, 1.9vw, 32px);
     font-weight:600; margin-left:2px;
   }
   .qjyd-status-duo .sd-badge .sd-badge-label{
-    font-family:var(--sans-zh); font-size:13px;
+    font-family:var(--sans-zh); font-size:15px;
     color:var(--text-3); letter-spacing:.04em;
     margin-top:6px;
   }
@@ -2181,6 +2187,273 @@
     color:var(--text-1);
   }
 
+
+  /* 2026-06 更新二十二: C15 从 hairline 双栏升级为“双卡片整体”方案。
+     目标: 标题与主内容都走画布左对齐, 两张等宽卡片共同形成中轴,
+     同时用卡片边界解决原版“内容轨居中但标题左对齐”的割裂感。
+     两卡必须等高: grid align-items:stretch + card height:100%。 */
+  .qjyd-status-cards{
+    flex:1; width:100%;
+    display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    column-gap:var(--sp-8);
+    align-items:stretch;
+    padding:var(--sp-9) 0 var(--sp-3);
+    min-height:0;
+  }
+  .qjyd-status-card{
+    height:100%; min-height:500px;
+    border:1px solid var(--line);
+    border-radius:12px;
+    background:rgba(255,255,255,.72);
+    box-shadow:0 18px 60px rgba(16,24,40,.06);
+    padding:var(--sp-9);
+    display:flex; flex-direction:column;
+    gap:var(--sp-7);
+    min-width:0;
+  }
+  .qjyd-status-card.done{
+    border-color:rgba(0,191,165,.28);
+    background:linear-gradient(180deg,rgba(230,255,249,.74),rgba(255,255,255,.72));
+  }
+  .qjyd-status-card .sd-tag{
+    font-family:var(--mono); font-size:12px; font-weight:700;
+    letter-spacing:.12em; text-transform:uppercase;
+    display:flex; align-items:center; gap:10px;
+    color:var(--text-2);
+  }
+  .qjyd-status-card.done .sd-tag{ color:var(--accent-dark); }
+  .qjyd-status-card .sd-mark{
+    width:9px; height:9px; border-radius:99px;
+    border:2px solid currentColor; display:inline-block; flex:0 0 auto;
+  }
+  .qjyd-status-card.done .sd-mark{
+    background:var(--accent-dark); border-color:var(--accent-dark);
+    box-shadow:0 0 0 4px rgba(0,191,165,.12);
+  }
+  .qjyd-status-card .sd-headline{
+    display:flex; align-items:flex-end;
+    gap:var(--sp-10);
+    flex-wrap:wrap;
+  }
+  .qjyd-status-card .sd-title{
+    flex:0 0 auto; min-width:0;
+    font-family:var(--sans-zh);
+    font-weight:700;
+    font-size:clamp(30px,2.5vw,44px);
+    line-height:1.16;
+    letter-spacing:-.04em;
+    color:var(--ink);
+  }
+  .qjyd-status-card.next .sd-title{ color:var(--text-1); }
+  .qjyd-status-card .sd-badge{
+    margin-left:auto;
+    flex-shrink:0; display:flex; flex-direction:column;
+    align-items:flex-end; gap:2px; line-height:1;
+    padding-bottom:4px;
+  }
+  .qjyd-status-card .sd-badge-num{
+    font-family:var(--sans); font-weight:750;
+    font-size:clamp(58px,5.4vw,92px);
+    letter-spacing:-.035em; line-height:1;
+  }
+  .qjyd-status-card .sd-badge-unit{
+    font-size:clamp(22px,1.9vw,32px);
+    font-weight:650; margin-left:2px;
+  }
+  .qjyd-status-card.done .sd-badge-num,
+  .qjyd-status-card.done .sd-badge-unit{ color:var(--accent-dark); }
+  .qjyd-status-card.next .sd-badge-num,
+  .qjyd-status-card.next .sd-badge-unit{ color:var(--text-1); }
+  .qjyd-status-card .sd-badge-label{
+    font-family:var(--sans-zh); font-size:15px;
+    color:var(--text-3); letter-spacing:.04em;
+    margin-top:6px;
+  }
+  .qjyd-status-card .sd-points{
+    list-style:none; margin:0; padding:0;
+    display:grid; gap:14px;
+    font-family:var(--sans-zh);
+    font-size:clamp(18px,1.25vw,22px);
+    line-height:1.5;
+    color:var(--text-2);
+  }
+  .qjyd-status-card .sd-points li{
+    position:relative; padding-left:22px;
+  }
+  .qjyd-status-card .sd-points li::before{
+    content:""; position:absolute; left:0; top:.72em;
+    width:6px; height:6px; border-radius:999px;
+    background:var(--accent);
+  }
+  .qjyd-status-card.next .sd-points li::before{ background:var(--text-4); }
+  .qjyd-status-card .sd-points li b,
+  .qjyd-status-card .sd-points li strong{
+    color:var(--ink); font-weight:700;
+  }
+  .qjyd-status-card.done .sd-points li b,
+  .qjyd-status-card.done .sd-points li strong{ color:var(--accent-dark); }
+  .qjyd-status-card .sd-foot{
+    margin-top:auto;
+    padding-top:var(--sp-5);
+    border-top:1px solid var(--line);
+    color:var(--text-3);
+    font-size:15px;
+    line-height:1.55;
+  }
+
+
+  /* 2026-06 更新二十三: C15 变体 · 左主右辅。
+     用于“成果明显是主叙事，下一步是行动栏”的场景。它不再强行做 1:1 对照，
+     而是把 85% 做成主视觉，把 1 项待打通作为右侧窄栏；标题与内容继续保持画布左对齐。 */
+  .qjyd-status-asym{
+    flex:1; width:100%;
+    display:grid;
+    grid-template-columns:minmax(0,1.28fr) minmax(360px,.72fr);
+    column-gap:var(--sp-10);
+    align-items:stretch;
+    padding:var(--sp-9) 0 var(--sp-3);
+    min-height:0;
+  }
+  .qjyd-status-asym .asym-main{
+    min-height:505px;
+    border-radius:14px;
+    /* 2026-06 更新二十四: 左侧 85% 主卡内部视觉重心偏低。
+       外框本身与右栏等高等顶, 问题来自主卡 top padding 64px 远大于右栏 32px。
+       改为 top 32 / horizontal 64 / bottom 64, 让两侧顶部标签重新对齐。 */
+    padding:var(--sp-7) var(--sp-10) var(--sp-10);
+    background:linear-gradient(135deg,rgba(230,255,249,.9),rgba(255,255,255,.72));
+    border:1px solid rgba(0,191,165,.22);
+    position:relative;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+  }
+  .qjyd-status-asym .asym-main::after{
+    content:""; position:absolute; right:-90px; top:-120px;
+    width:330px; height:330px; border-radius:999px;
+    background:rgba(0,191,165,.10);
+    pointer-events:none;
+  }
+  .qjyd-status-asym .asym-side{
+    min-height:505px;
+    border-left:1px solid var(--line);
+    padding:var(--sp-7) 0 var(--sp-7) var(--sp-9);
+    display:flex;
+    flex-direction:column;
+  }
+  .qjyd-status-asym .sd-tag{
+    font-family:var(--mono); font-size:12px; font-weight:700;
+    letter-spacing:.12em; text-transform:uppercase;
+    display:flex; align-items:center; gap:10px;
+    color:var(--text-2);
+    position:relative; z-index:1;
+  }
+  .qjyd-status-asym .asym-main .sd-tag{ color:var(--accent-dark); }
+  .qjyd-status-asym .sd-mark{
+    width:9px; height:9px; border-radius:99px;
+    border:2px solid currentColor; display:inline-block; flex:0 0 auto;
+  }
+  .qjyd-status-asym .asym-main .sd-mark{
+    background:var(--accent-dark); border-color:var(--accent-dark);
+    box-shadow:0 0 0 4px rgba(0,191,165,.12);
+  }
+  .qjyd-status-asym .asym-num{
+    margin-top:var(--sp-6);
+    display:flex; align-items:flex-end; gap:10px;
+    color:var(--accent-dark);
+    position:relative; z-index:1;
+  }
+  .qjyd-status-asym .asym-num .n{
+    font-family:var(--sans); font-weight:800;
+    font-size:clamp(112px,10.6vw,178px);
+    line-height:.84;
+    letter-spacing:-.07em;
+  }
+  .qjyd-status-asym .asym-num .u{
+    font-family:var(--sans-zh); font-weight:700;
+    font-size:clamp(34px,3vw,48px);
+    line-height:1;
+    padding-bottom:12px;
+  }
+  .qjyd-status-asym .asym-label{
+    margin-top:var(--sp-4);
+    font-family:var(--sans-zh);
+    font-weight:700;
+    font-size:clamp(30px,2.5vw,44px);
+    line-height:1.18;
+    letter-spacing:-.045em;
+    color:var(--ink);
+    position:relative; z-index:1;
+  }
+  .qjyd-status-asym .asym-side .side-num{
+    margin-top:var(--sp-8);
+    display:flex; align-items:flex-end; gap:8px;
+    color:var(--text-1);
+  }
+  .qjyd-status-asym .asym-side .side-num .n{
+    font-family:var(--sans); font-weight:800;
+    font-size:clamp(68px,6.4vw,104px);
+    line-height:.9;
+    letter-spacing:-.05em;
+  }
+  .qjyd-status-asym .asym-side .side-num .u{
+    font-family:var(--sans-zh); font-weight:700;
+    font-size:30px;
+    line-height:1;
+    padding-bottom:9px;
+  }
+  .qjyd-status-asym .asym-side .side-title{
+    margin-top:var(--sp-5);
+    font-family:var(--sans-zh);
+    font-weight:700;
+    font-size:clamp(28px,2.2vw,38px);
+    line-height:1.18;
+    letter-spacing:-.04em;
+    color:var(--ink);
+  }
+  .qjyd-status-asym .sd-points{
+    list-style:none; margin:0; padding:0;
+    display:grid; gap:14px;
+    font-family:var(--sans-zh);
+    font-size:clamp(18px,1.25vw,22px);
+    line-height:1.5;
+    color:var(--text-2);
+    position:relative; z-index:1;
+  }
+  .qjyd-status-asym .asym-main .sd-points{
+    margin-top:var(--sp-7);
+    max-width:720px;
+  }
+  .qjyd-status-asym .asym-side .sd-points{
+    margin-top:var(--sp-8);
+    gap:13px;
+    font-size:clamp(17px,1.15vw,20px);
+  }
+  .qjyd-status-asym .sd-points li{
+    position:relative;
+    padding-left:22px;
+  }
+  .qjyd-status-asym .sd-points li::before{
+    content:""; position:absolute; left:0; top:.72em;
+    width:6px; height:6px; border-radius:999px;
+    background:var(--accent);
+  }
+  .qjyd-status-asym .asym-side .sd-points li::before{ background:var(--text-4); }
+  .qjyd-status-asym .sd-points li b,
+  .qjyd-status-asym .sd-points li strong{
+    color:var(--ink); font-weight:700;
+  }
+  .qjyd-status-asym .asym-main .sd-points li b,
+  .qjyd-status-asym .asym-main .sd-points li strong{ color:var(--accent-dark); }
+  .qjyd-status-asym .sd-foot{
+    margin-top:var(--sp-7);
+    padding-top:var(--sp-5);
+    border-top:1px solid var(--line);
+    color:var(--text-3);
+    font-size:15px;
+    line-height:1.55;
+  }
+
   /* ============================================================
      C16 · Bullet Manifest (要点墙, 3 列纯文字)
      用途: 周报"本周做了 N 件事" / 复盘"亮点 N 项" / 待办清单
@@ -2189,7 +2462,9 @@
   .qjyd-bullet-manifest{
     flex:1; display:grid;
     grid-template-columns:repeat(3, minmax(0, 1fr));
-    column-gap:var(--sp-9);
+    /* 2026-06 更新二十一: C15 徽章放大后, 双栏之间需要略微增加呼吸感;
+       column-gap sp-9 (48) → sp-10 (64), 只加一点, 避免压窄单栏导致标题换行. */
+    column-gap:var(--sp-10);
     /* 2026-06 更新十九: row-gap 从 sp-9 (48px) 加到 sp-11 (80px).
        原因: align-content:center 下, 两行内容总高 ~395px, grid 容器 ~646px,
        多余 ~250px 被居中 → 上下留白各 ~125px, 而行间距只有 48px,
@@ -2875,19 +3150,19 @@
   </div>
 </section>
 
-<section class="slide light" data-layout="C15" data-animate="status-duo" style="--c15-track-w:1177px">
-  <!-- C15 · Status Duo (成果 / 瓶颈对照页, 无图)
-       规则: 左 DONE = accent 海洋青, 右 NEXT = 中性灰 (不用红色)
-       每栏最多 4 条 bullet, 第一行可加粗主张, 整页无图
-       2026-06 更新十八: 标题区还原到画布最左 (left=88, 与 C04/C06/C16 等其他页一致),
-       仅 status-duo 保持整组居中 (left=212). 这是有意的"标题画布对齐 + 主内容整组居中"
-       版式特征: 标题保持页面级一致性, 主内容用居中表达"双栏对照"结构语义. -->
+<section class="slide light" data-layout="C15" data-animate="status-duo">
+  <!-- C15 · Status Cards (成果 / 下一步双卡片, 无图)
+       2026-06 更新二十二: 从原 hairline 双栏改为“双卡片整体”方案。
+       原因: 当前 deck 多数页面同时依赖标题左锚点 + 主内容整体秩序, 原 C15 的
+       “标题画布左对齐 + 内容轨居中”在翻页时会显得和其他页不一致。
+       新方案: 两张等高卡片占满画布内容区, 左右卡片天然形成中轴, 同时保持
+       标题与主内容左缘一致。卡片等高由 CSS grid stretch + card height:100% 保证。 -->
   <div style="display:flex;flex-direction:column;gap:var(--sp-4);margin-bottom:var(--sp-7)" data-anim>
     <div class="qjyd-meta">PROGRESS · 知识自沉淀 3.0</div>
     <h1 class="qjyd-h1">本周成果与下一步</h1>
   </div>
-  <div class="qjyd-status-duo">
-    <div class="sd-col done">
+  <div class="qjyd-status-cards">
+    <div class="qjyd-status-card done">
       <div class="sd-tag"><span class="sd-mark"></span>DONE · 本周成果</div>
       <div class="sd-headline">
         <div class="sd-title">3.0 优化完成<br>本周正式启用</div>
@@ -2903,8 +3178,7 @@
       </ul>
       <div class="sd-foot">3.0 已稳定运行一周, 进入常态化沉淀阶段。</div>
     </div>
-    <div class="sd-rule"></div>
-    <div class="sd-col next">
+    <div class="qjyd-status-card next">
       <div class="sd-tag"><span class="sd-mark"></span>NEXT · 待打通</div>
       <div class="sd-headline">
         <div class="sd-title">知识全自动入库<br>仍差最后一环</div>
@@ -2925,6 +3199,44 @@
   <div class="qjyd-foot">
     <span class="brand">薪人薪事 · 产品介绍</span>
     <span>2026 · QJYD-CORP · PAGE 15</span>
+  </div>
+</section>
+
+<section class="slide light" data-layout="C15-ASYM" data-animate="status-duo">
+  <!-- C15 变体 · Status Asym (左主右辅, 无图)
+       用途: 成果数据是主叙事, 下一步/瓶颈是行动栏。
+       与 C15 双卡片相比, 本页不追求 1:1 等权, 而是主动强化“85% 已达成”的视觉权重。 -->
+  <div style="display:flex;flex-direction:column;gap:var(--sp-4);margin-bottom:var(--sp-7)" data-anim>
+    <div class="qjyd-meta">PROGRESS · 知识自沉淀 3.0</div>
+    <h1 class="qjyd-h1">本周成果与下一步</h1>
+  </div>
+  <div class="qjyd-status-asym">
+    <div class="asym-main">
+      <div class="sd-tag"><span class="sd-mark"></span>DONE · 本周成果</div>
+      <div class="asym-num"><span class="n">85</span><span class="u">%</span></div>
+      <div class="asym-label">沉淀可直接入库<br>3.0 本周正式启用</div>
+      <ul class="sd-points">
+        <li><b>100%</b> · 待人工审核分类准确率</li>
+        <li>本周起进入正式运营周期</li>
+        <li>话后批量沉淀已稳定运行</li>
+      </ul>
+    </div>
+    <div class="asym-side">
+      <div class="sd-tag"><span class="sd-mark"></span>NEXT · 待打通</div>
+      <div class="side-num"><span class="n">1</span><span class="u">项</span></div>
+      <div class="side-title">仍待开放接口</div>
+      <ul class="sd-points">
+        <li>低代码平台知识库接口尚未开放</li>
+        <li>当前依赖 <b>手动上传</b> 完成同步</li>
+        <li>待开放接口后即可全自动化</li>
+        <li>计划与平台侧本月内对齐方案</li>
+      </ul>
+      <div class="sd-foot">瓶颈不在自沉淀质量, 而在与下游知识库的连接通道。</div>
+    </div>
+  </div>
+  <div class="qjyd-foot">
+    <span class="brand">薪人薪事 · 产品介绍</span>
+    <span>2026 · QJYD-CORP · PAGE 15B</span>
   </div>
 </section>
 
@@ -3357,7 +3669,7 @@ if(__cleanShot){
   document.querySelectorAll('[data-animate="pipeline"] [data-anim]').forEach(el=>el.style.opacity='1');
 } else {
   try {
-    motion = await import('./motion.min.js');           /* 修正: 同目录, 不是 assets/assets/ */
+    motion = await import('./assets/motion.min.js');    /* 与 template.html / template-swiss.html 路径一致, 项目里把 motion.min.js 放在 ppt/assets/ 下 */
   } catch(e1) {
     try {
       motion = await import('https://cdn.jsdelivr.net/npm/motion@11.11.17/+esm');
@@ -4120,10 +4432,11 @@ if(motion){
     if(meta)   animate(meta,   {opacity:[0,1]}, {duration:.3, delay:.5, easing:EASE_PROD});
   }
   function rCorpStatusDuo(slide){
-    /* C15 Status Duo: head -> 左 DONE 滑入 -> 右 NEXT 滑入 (略延迟) -> 各栏 points stagger */
+    /* C15 Status: 支持旧 hairline duo 与新双卡片整体两种 DOM。
+       head -> 左 DONE 滑入 -> 右 NEXT 滑入 (略延迟) -> 各栏 points stagger */
     const head = slide.querySelectorAll('[data-anim]')[0];
-    const done = slide.querySelector('.qjyd-status-duo .sd-col.done');
-    const next = slide.querySelector('.qjyd-status-duo .sd-col.next');
+    const done = slide.querySelector('.qjyd-status-card.done') || slide.querySelector('.qjyd-status-asym .asym-main') || slide.querySelector('.qjyd-status-duo .sd-col.done');
+    const next = slide.querySelector('.qjyd-status-card.next') || slide.querySelector('.qjyd-status-asym .asym-side') || slide.querySelector('.qjyd-status-duo .sd-col.next');
     const rule = slide.querySelector('.qjyd-status-duo .sd-rule');
     const dPts = done ? [...done.querySelectorAll('.sd-points > li')] : [];
     const nPts = next ? [...next.querySelectorAll('.sd-points > li')] : [];
