@@ -420,9 +420,16 @@ cp "<SKILL_ROOT>/assets/template-corp.html" "项目/XXX/ppt/index.html"
 1. **先 Read 当前用的模板**(至少读到 `<style>` 块末尾):
    - 风格 A → `assets/template.html`
    - 风格 B → `assets/template-swiss.html`
+   - 风格 C → `assets/template-corp.html`
 2. **对照对应 layouts 文件的 Pre-flight 列表**,确认你要用的每个类都在 `<style>` 里存在
 3. 如果某个类缺失:**在模板的 `<style>` 里补上**,不要在每个 slide 里 inline 重写
 4. **模板是唯一的类名来源**——不要发明新类名,如需自定义用 `style="..."` inline
+5. **模板也是装饰 SVG / 装饰几何的唯一来源**(2026-06 新增 · 真实踩坑 · 必读):
+   - layouts 文档里的"完整骨架"代码块, 对**装饰 SVG**(封面圆环、章节封圆、Thank You logo 环、Swiss 风点阵、杂志风流体背景等)经常只画了**简化伪代码 + 注释**(例如 `<!-- 4 叶片旋转环 + 中心 logo (具体见模板) -->`), **不是模板真实实现的镜像**
+   - AI 看到这种伪代码时, 会**自己脑补几何参数**(半径、stroke、透明度、点阵 mask), 极易引入"看上去像但实际多了一圈"的偏差——典型的就是封面 logo 外多一圈"贴脸内圈", 让 logo 像戴了项圈
+   - **铁律**: 装饰 SVG **整段从模板对应 section 复制**, 不要按文档伪代码自己补全。需要替换的只是 `<img src>` 路径、文字内容、color tokens; **几何参数(半径/stroke/dasharray/mask 内外径/transform/装饰点位)一律不动**
+   - 同理适用于:任何文档里写"具体见模板""详见模板"的代码块,以及任何含 `<!-- ... -->` 省略号注释的 SVG / 装饰段
+   - 反例:照着 `layouts-corp.md` C01 简化骨架自己写 `<svg>` + 三圈同心环, 结果第 3 圈贴在 logo 外像项圈(2026-06-17 真实事故)
 
 **风格 A 常见容易遗漏的类**:
 `h-hero` / `h-xl` / `h-sub` / `h-md` / `lead` / `kicker` / `meta-row` / `stat-card` / `stat-label` / `stat-nb` / `stat-unit` / `stat-note` / `pipeline-section` / `pipeline-label` / `pipeline` / `step` / `step-nb` / `step-title` / `step-desc` / `grid-2-7-5` / `grid-2-6-6` / `grid-2-8-4` / `grid-3-3` / `grid-6` / `grid-3` / `grid-4` / `frame` / `frame-img` / `img-cap` / `callout` / `callout-src` / `chrome` / `foot`
@@ -658,6 +665,188 @@ cp "<SKILL_ROOT>/assets/template-corp.html" "项目/XXX/ppt/index.html"
      "file:///path/to/index.html?slide=1&clean=1"
    ```
 4. **三条都不行**才提示用户人工逐页核对,不要默默跳过自检。
+
+#### 4.0.2 · 封面 / Thank You / 章节封必做"模板对照截图"(2026-06 新增)
+
+风格 A / B / C 的封面、Thank You、章节封都依赖**装饰 SVG**(同心环、点阵环、流体背景、几何浮动等)。这些 SVG 在 layouts 文档里通常是**简化伪代码 + "具体见模板"注释**,AI 极易按伪代码自己补全几何, 引入"多一圈贴脸内圈""少一层点阵环""装饰浮点位置不对"等偏差——用户翻页时立刻能感觉"哪儿不对", 但 P0/P1 自检清单不一定抓得到。
+
+**硬规则**:生成 deck 后, 必须把以下 3 类页和模板的对应页**并排截图人工对照**:
+
+| 必查页 | 对照对象 | 重点看 |
+|---|---|---|
+| 第 1 页(封面) | 模板第 1 页(C01 / 风格 A 1 / SWISS-COVER) | logo 周围圈数、点阵环内外径、浮动小点位置 |
+| 最后一页(Thank You) | 模板对应页(C13 / 杂志风收尾 / SWISS-CLOSING) | 同上, 尤其 logo 圆环装饰 |
+| 任意一页章节封 | 模板章节封(C02 等) | 大圆 + 数字位置、内外环间距 |
+
+**操作**:用 Step 4.0.1 同款 Playwright 工具对模板 URL 和生成 deck URL 各截一张同页, 在回复里 `view_image` 两张图前后比对; 如发现装饰元素增删/位置/半径不一致, 按 Step 3.0 原则 5 把整段装饰 SVG 从模板回滚复制。
+
+**不要相信"我按文档骨架写的所以一定对"**——文档里凡是带 `<!-- ... -->` 省略号或写"具体见模板"的 SVG 段, 都是 AI 容易脑补出错的高危区。
+
+#### 4.0.3 · "颜色凭空消失" + "差一点对齐" 两类隐性 bug 必查 (2026-06 新增 · 真实踩坑)
+
+CSS 有两类 bug 不会报错、不会被 P0/P1 自检抓到, 但用户翻页时立刻能感觉"哪儿不对":
+
+**类型 1: `var(--xxx)` 未定义导致颜色凭空消失 (transparent/initial 静默 fallback)**
+
+模板 CSS 写了 `background:var(--text-4)` 之类的引用, 但 `:root` 里从未定义 `--text-4` 时, 浏览器静默 fallback 到 `transparent`——圆点 / 边框 / 文字 / 背景**整块消失**, 但 DOM 还在、几何参数都对。生成后必查的高发位置:
+
+- 列表圆点 (`li::before` 的 `background`)
+- 卡片边框 (`border-color` 用 var)
+- 文字色 (`color: var(--xxx)`)
+- 装饰条 (`background: var(--xxx)`)
+
+**自检方法**: 用 Playwright `getComputedStyle(el, '::before').backgroundColor` 看实际计算值, 出现 `rgba(0,0,0,0)` 即是 bug。**或者更轻量**: 生成后逐页扫一眼, 凡是"按理应该有圆点 / 描边 / 角标"但**实际看不见**的位置, 优先怀疑这条。
+
+**修法两选一**:
+1. 在 `:root` 补 token 定义 (推荐, 一处补全 deck 所有引用都生效)
+2. 把所有 `var(--xxx)` 改写为 `var(--xxx, #具体 fallback 色)` (双保险, 即使 root 缺定义也不消失)
+
+**类型 2: "差一点对齐" 错位 (10-30 px 量级)**
+
+最常见的反例: 左右两列重心一个居中、一个贴顶, bullet 末行的 bottom 比左列底部锚点矮 20-30 px。这个差距落在"视觉对齐期待区", 比"完全没对齐"更刺眼。
+
+**自检方法**: 量化两列底部锚点的 y 坐标差:
+
+```js
+// playwright 内
+const a = document.querySelector('.num-side .ba-block').getBoundingClientRect().bottom;
+const b = document.querySelector('.ctx-side ul li:last-child').getBoundingClientRect().bottom;
+console.log('Δ =', a - b);
+```
+
+判定:
+- |Δ| ≤ 4 px: 严格对齐 ✅
+- 5 ≤ |Δ| ≤ 30 px: ⚠️ 危险区, 视觉会期待对齐但失败——必须修
+- |Δ| ≥ 40 px: ✅ 视觉判定为"两列没意图对齐", 反而舒服
+
+**修法**: 要么严格对齐 (二选一锚点), 要么把差距做大 (改 `justify-content:center` / 加 `margin`) 让视觉放弃对齐期待。
+
+**这两类 bug 在 `references/layouts-corp.md` 的"2026-06 更新二十一"有完整案例与红线 26-29**。
+
+#### 4.0.4 · 巨数 + 注脚的最小呼吸距离 (2026-06 新增 · C04 三段间距)
+
+C04 (qjyd-kpi-hero) 左列三段结构 `mega 巨数 / 副标 / ba-block 进度条` 有两条容易翻车的间距规则:
+
+**规则 1: mega 下方注脚 (subTitle) 的 gap ≥ 16px, 且 ≥ 字号 × 0.10**
+
+mega 字号 ~144px (`font-size: 65%` 折算自 num-mega base), gap 低于 16 会让副标"被吸"在巨数底缘, 失去呼吸。当前模板 `.qjyd-kpi-wrap { gap: var(--sp-5) /* 16 */ }`, 不要改回 `--sp-4 (12)`。
+
+**规则 2: 分组对比 ≥ 1:2**
+
+`.qjyd-kpi-group gap` (副标 ↔ ba) 必须 ≥ `.qjyd-kpi-wrap gap` × 2, 否则"小间距=mega+副标 绑定 / 大间距=与 ba 分段"的分组语义会瓦解。当前模板 `group:40 / wrap:16 = 1:2.5` ✅。
+
+**自检**:
+
+```js
+// playwright 内, 在 C04 页
+const wrap = getComputedStyle(document.querySelector('.qjyd-kpi-wrap')).gap;  // 期望 16px
+const group = getComputedStyle(document.querySelector('.qjyd-kpi-group')).gap; // 期望 40px (≥ wrap × 2)
+```
+
+不满足任一条都视为 regression。详见 `references/layouts-corp.md` "2026-06 更新二十二" 红线 30-31。
+
+#### 4.0.5 · C04 左右双锚定布局 — 上下硬锚定 (2026-06 新增 · 更新二十三)
+
+C04 (qjyd-kpi-hero) 左列的 `.qjyd-kpi-group` 不再用 `margin:auto 0` 整组居中, 而是用双锚定:
+
+1. **mega.top ≈ caseCard.top** (右列首个卡片顶端)
+2. **ba.bottom ≈ lastLi.bottom** (右列 bullet 末行底端)
+
+**实现**:
+```css
+.qjyd-kpi-hero .num-side .qjyd-kpi-group{
+  flex:1; justify-content:space-between;
+  margin-top:70px; margin-bottom:65px;
+}
+```
+
+**约束**:
+- bullet 条数限制 **4-6 条** (少则 ba 失锚, 多则溢出)
+- case 卡必须是固定高度卡片 (currently 165px), 不要换用可变高度元素
+
+**自检**:
+```js
+// C04 页, playwright 内
+const mega = document.querySelector('.qjyd-kpi-mega').getBoundingClientRect().top;
+const caseCard = document.querySelector('.ctx-side > :first-child').getBoundingClientRect().top;
+const ba = document.querySelector('.ba-block').getBoundingClientRect().bottom;
+const lastLi = Array.from(document.querySelectorAll('.ctx-side .qjyd-bullet li'));
+const lastBottom = lastLi[lastLi.length-1].getBoundingClientRect().bottom;
+const dTop = mega - caseCard;
+const dBot = ba - lastBottom;
+console.log({ dTop, dBot });  // 期望 |dTop|≤4, |dBot|≤4
+```
+
+|dTop|>4 或 |dBot|>4 且差值在 5-30 范围时, 按类型 2 (差一点对齐) 处理。左列中段 sub→ba gap 被撑到 ~114 是"左疏右密"设计特征, 不是 bug。
+
+详见 `references/layouts-corp.md` "2026-06 更新二十三" 红线 32-34。
+
+#### 4.0.6 · "视觉底 vs 几何底" 错觉 — 灰底块 padding-bottom 校准 (2026-06 新增 · 更新二十四)
+
+**当肉眼觉得两个元素"没对齐"但量出来 bottom 一样时, 99% 是这个问题**。
+
+典型场景: 左侧灰底卡片 + 右侧文字行, 几何 bottom 都是 y=765, 但人眼觉得灰底卡片"更靠下、更垂". 原因:
+
+| 元素 | 几何 bottom | "有内容部分" bottom |
+|---|---|---|
+| 灰底卡片 | 边框底 | padding-bottom 上方的最后一个子元素 (如 ba-bar) |
+| 文字行 | 行盒底 | 字符基线 (≈ 行盒 bottom - 3-5px) |
+
+**判定: 如果"内容 bottom" 差 ≥ 8 px, 视觉就会错位, 无论几何 bottom 是否相同**。
+
+**修法**: 减小灰底卡片的 padding-bottom (典型从 16 减到 8), 让"内容底"上升接近"文字基线". 注意几何 bottom 仍由布局锚定 (如 C04 的 space-between), 改 padding-bottom 不会破坏整体布局。
+
+**量法**:
+```js
+// 真·视觉底用 Range 量基线, 不是 element.getBoundingClientRect
+const li = document.querySelector('.qjyd-bullet li:last-child');
+const range = document.createRange();
+range.selectNodeContents(li);
+const baseline = range.getBoundingClientRect().bottom;
+const baBar = document.querySelector('.ba-bar').getBoundingClientRect().bottom;
+console.log('视觉底 Δ =', baBar - baseline);  // 期望 |Δ| ≤ 8
+```
+
+**红线**: 灰底块的 `padding-bottom` 默认 ≤ 8px, 不要用 16px (即不要用 `padding: var(--sp-5) var(--sp-6)` 这种四边等大 padding). 详见 layouts-corp.md "2026-06 更新二十四" 红线 35-36。
+
+#### 4.0.7 · 多分辨率自检 — "在我电脑上看完美"是危险信号 (2026-06 新增 · 更新二十五)
+
+**典型陷阱**: 模板 / deck 在 1600×900 截图严格对齐, 但用户在 1920×1080 / 2560×1440 / Retina 屏幕上看到明显错位.
+
+**根因**: 任何用绝对像素 (px) 写死的 margin / padding / 锚定值, 在视口高度变化时不会随之缩放. 即使用 vh, 也无法匹配 `justify-content:center` 这种"按剩余空间居中"的机制 (剩余空间随视口非线性变化).
+
+**强制规则**:
+1. 任何"left.bottom ≈ right.bottom"或"left.top ≈ right.top"这类**跨列对齐**, 截图自检必须**至少覆盖三档分辨率**:
+   - 1280×720 (低端笔记本)
+   - 1600×900 (默认设计稿)
+   - 1920×1080 (主流外接显示器)
+2. 如果三档分辨率任一档 |Δ| > 10 px, 视为"分辨率漂移 bug", 必须修。
+3. 修法优先级:
+   - **首选 JS 动态校准** (在 hero slide 上设 CSS 变量, margin 引用 var)，时机要覆盖 load/resize/字体ready/slide切换
+   - 次选 CSS calc + vh + 百分比 (能解决线性缩放, 不能解决 justify-content:center 类非线性)
+   - 慎用静态 px margin (仅在两列内容都按 vh 等比例缩放时安全)
+
+**自检脚本**:
+```js
+// playwright 多视口循环
+for (const [w,h] of [[1280,720],[1600,900],[1920,1080]]) {
+  const browser = await pw.chromium.launch();
+  const ctx = await browser.newContext({ viewport: { width: w, height: h }});
+  const page = await ctx.newPage();
+  await page.goto(url, { waitUntil: 'domcontentloaded' });
+  await page.waitForTimeout(1500);
+  // navigate to target slide ...
+  const Δ = await page.evaluate(() => {
+    const left = document.querySelector('.left-anchor').getBoundingClientRect().bottom;
+    const right = document.querySelector('.right-anchor').getBoundingClientRect().bottom;
+    return left - right;
+  });
+  console.log(`${w}x${h}: Δ=${Δ}`);  // 期望全部 |Δ| ≤ 10
+  await browser.close();
+}
+```
+
+**详见 `references/layouts-corp.md` "2026-06 更新二十五" 红线 37-39**。
 
 #### 风格 A · 电子杂志风必查
 

@@ -21,6 +21,7 @@
     --ink-rgb:      31,45,61;
     --text-2:       #5A6B7B;      /* 次要文字 */
     --text-3:       #8A97A3;      /* 辅助 / 说明 */
+    --text-4:       #B0BBC4;      /* 浅灰 / NEXT 圆点等弱信号 (2026-06 修复 var(--text-4) 解析失败 → 透明) */
     --text-on-dark: #ffffff;
 
     --paper:        #FFFFFF;
@@ -1415,26 +1416,48 @@
      KPI 组应该整体居中到剩余空间. 所以包一层 .qjyd-kpi-group, 整组 margin:auto 0.
      不要给单个子元素 margin-top:auto / margin-bottom:auto, 否则会撑开组内间距. */
   .qjyd-kpi-hero .num-side .qjyd-kpi-group{
-    display:flex; flex-direction:column; gap:var(--sp-7);   /* 32px: mega 副标 → ba 之间的呼吸 */
-    margin:auto 0;                /* 整组在 num-side 剩余空间内垂直居中 */
+    /* 2026-06 更新二十三: 左右双锚定布局 (取代旧版"整组居中").
+       目标: ① mega.top ≈ caseCard.top (右列首个卡片顶端)
+              ② ba.bottom ≈ ctx-side 最末元素.bottom (默认 5 条 bullet 的 lastLi)
+       实现: margin-top 70 + margin-bottom 65 把 group 上下硬锚定到 ctx-side 内容范围,
+            flex:1 占满 num-side 剩余空间, space-between 让 wrap(mega+副标) 上贴, ba 下贴,
+            中段 wrap→ba gap 从 40 被撑到 ~114 — 这不是 bug, 是"左疏右密"密度对比的 feature.
+       约束: 此布局假设 ctx-side 内容总高 ≈ 472px (5 条 bullet + 1 张 case 卡). bullet 条数变化时
+            lastLi.bottom 会漂移, 见红线 32; 7 条以上 bullet 会让 ctx-side 内容溢出 ctxSide 高度.
+       原 wrap→ba 40 / mega→sub 16 的呼吸比例由内部 gap 保留, 上下锚定仅影响中段空白. */
+    display:flex; flex-direction:column; gap:var(--sp-8);   /* 40px: 内部最小呼吸, 实际会被 space-between 撑开到 ~114 */
+    flex:1;                        /* 占满 num-side 剩余空间, space-between 才能起作用 */
+    justify-content:space-between; /* 配合 margin-top/bottom 形成上下硬锚定 */
+    margin-top:var(--c04-mt, 70px); margin-bottom:var(--c04-mb, 65px);  /* 2026-06 更新二十五: 由 JS 动态校准, 兜底 70/65 (适配 1600x900) */
   }
   .qjyd-kpi-hero .num-side .qjyd-kpi-wrap{
-    display:flex; flex-direction:column; gap:var(--sp-4);
+    /* gap 12 → 16: mega (weight 200, ~144px 字号) 下方注脚距离应 ≥ 字号 0.10-0.15 倍,
+       12px 触发"窒息感", 16px 刚好脱离吸附. 同步更新 .qjyd-kpi-group gap 40 维持分组对比. */
+    display:flex; flex-direction:column; gap:var(--sp-5);
   }
   .qjyd-kpi-hero .ctx-side{
-    /* 2026-06 更新七 v2: ctx-side 用 flex-start + gap, 不再贴底
-       bullet 紧跟 case 卡, 留白自然落到 ctx-side 底部 (与左侧 ba-block 形成视觉呼应) */
+    /* 2026-06 更新八: 改用 justify-content:center, 让 ctx-side 内的 case 卡 + bullet
+       整组在右列内垂直居中, 与左列 .qjyd-kpi-group (margin:auto 0 居中) 视觉重心对齐.
+       早期版本用 flex-start + 底部留白"自然呼应 ba-block"思路, 实测在 5-6 条 bullet 时
+       bullet 末行 bottom 落在 696, 与 ba-block bottom 717 之间差 ~21px——肉眼会捕捉到
+       "快对齐没对上"的不适. 改成 center 后整组下移, 末行 bottom ≈ 762, 远离 ba-block
+       底部锚点, 反而消除了对齐期待 (差 45+ px 时视觉会判定"两列就是没意图严格对齐").
+       注意: 内容总高 > ctx-side 高度 (~607 px) 时居中会让顶/底都被裁掉; 5-7 条 bullet
+       + 1 张 case 卡的内容总高 ≈ 430 px, 安全. 超过此量级请改回 flex-start 并删减 bullet. */
     display:flex; flex-direction:column;
     gap:var(--sp-7);
-    justify-content:flex-start;
+    justify-content:center;
   }
   /* bullet 与上方 case 卡之间总间距 ≈ 44px (gap sp-7 32 + margin-top sp-4 12) */
   .qjyd-kpi-hero .ctx-side > .qjyd-bullet{ margin-top:var(--sp-4); }
 
   /* C04 左侧底部: before/after 对比条 */
   .qjyd-kpi-hero .ba-block{
+    /* 2026-06 更新二十四: padding-bottom 16→8, 消除灰底"垫底感". ba-bar bottom 上升至 757,
+       与右列 lastLi 文字基线 (762) 的差距从 -13 缩至 -5, 进度条不再"垂"在文字下方.
+       几何底 ba.bottom=765 不变, 双锚定布局不受影响. */
     display:flex; flex-direction:column; gap:var(--sp-3);
-    padding:var(--sp-5) var(--sp-6);
+    padding:var(--sp-5) var(--sp-6) var(--sp-3);
     background:var(--paper-soft);
     border-left:3px solid var(--accent);
     border-radius:0 8px 8px 0;
@@ -2298,7 +2321,8 @@
     width:6px; height:6px; border-radius:999px;
     background:var(--accent);
   }
-  .qjyd-status-card.next .sd-points li::before{ background:var(--text-4); }
+  /* 2026-06 修复: 早期写法 background:var(--text-4) 在 :root 未定义 --text-4 时解析为 transparent, 圆点全部不可见. 已在 :root 补 --text-4=#B0BBC4, 此处保留显式 fallback 双保险. */
+  .qjyd-status-card.next .sd-points li::before{ background:var(--text-4, #B0BBC4); }
   .qjyd-status-card .sd-points li b,
   .qjyd-status-card .sd-points li strong{
     color:var(--ink); font-weight:700;
@@ -2451,7 +2475,8 @@
     width:6px; height:6px; border-radius:999px;
     background:var(--accent);
   }
-  .qjyd-status-asym .asym-side .sd-points li::before{ background:var(--text-4); }
+  /* 2026-06 修复: 同 .qjyd-status-card.next 的 var(--text-4) 解析问题, 这里也补 fallback. */
+  .qjyd-status-asym .asym-side .sd-points li::before{ background:var(--text-4, #B0BBC4); }
   .qjyd-status-asym .sd-points li b,
   .qjyd-status-asym .sd-points li strong{
     color:var(--ink); font-weight:700;
@@ -4667,6 +4692,51 @@ if(motion){
   }
   addEventListener('swiss-low-power-change', e=>{e.detail.on ? stop() : start();});
   start();
+})();
+</script>
+
+<script>
+/* C04 双锚定动态校准 (2026-06 更新二十五):
+   不同视口下 caseCard.top 和 lastLi.bottom 会按 ctx-side justify-content:center 漂移,
+   单纯用 vh 锚定追不上, 必须 JS 实时测量.
+   时机: load + resize + 字体加载完成 + slide 切换 (每次切到 C04 时重测一遍).
+   兜底: CSS 默认 70/65 在 1600x900 接近完美, JS 失效时仍可用. */
+(function alignC04(){
+  function calibrate(){
+    document.querySelectorAll('.qjyd-kpi-hero').forEach(function(slide){
+      var numSide = slide.querySelector('.num-side');
+      var caseCard = slide.querySelector('.ctx-side > :first-child');
+      if (!numSide || !caseCard) return;
+      var lis = slide.querySelectorAll('.ctx-side .qjyd-bullet li');
+      var lastEl = lis.length ? lis[lis.length-1] : slide.querySelector('.ctx-side > :last-child');
+      if (!lastEl) return;
+      var ns = numSide.getBoundingClientRect();
+      var cc = caseCard.getBoundingClientRect();
+      var lb = lastEl.getBoundingClientRect();
+      var mt = Math.max(0, cc.top - ns.top);
+      var mb = Math.max(0, ns.bottom - lb.bottom);
+      slide.style.setProperty('--c04-mt', mt.toFixed(1) + 'px');
+      slide.style.setProperty('--c04-mb', mb.toFixed(1) + 'px');
+    });
+  }
+  function schedule(){ requestAnimationFrame(calibrate); }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', schedule);
+  } else {
+    schedule();
+  }
+  window.addEventListener('load', schedule);
+  window.addEventListener('resize', schedule);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(schedule);
+  // 钩 deck 的 go() 函数, 切到 C04 时重新校准
+  var origGo = window.go;
+  if (typeof origGo === 'function') {
+    window.go = function(n){ var r = origGo.apply(this, arguments); schedule(); return r; };
+  } else {
+    // fallback: 监听 transform 变化 (deck 用 translateX 实现切换)
+    var deck = document.getElementById('deck');
+    if (deck) new MutationObserver(schedule).observe(deck, { attributes: true, attributeFilter: ['style'] });
+  }
 })();
 </script>
 </body>

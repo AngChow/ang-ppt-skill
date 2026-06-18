@@ -69,7 +69,7 @@
 
 **推荐**：用原生支持视觉的模型，如 `gpt-5.5`(Azure)、`gpt-4o`、`Claude 3.5+`、`Gemini 2.x`、`Qwen-VL`、`doubao-seed-2.0-pro`。
 
-**退而求其次**：纯文本模型(如 `glm-5.1` / `deepseek-v4-pro`)+ vision API fallback(如 `azure-vision.py`)，能用但视觉调试细节会丢一档。
+**退而求其次**：纯文本模型(如 `glm-5.2` / `deepseek-v4-pro`)+ vision API fallback(如 `azure-vision.py`)，能用但视觉调试细节会丢一档。
 
 **最差**：纯文本模型且没有 vision fallback——视觉调试只能靠人，AI 这边更像"写 HTML 助手"而非"设计助手"。
 
