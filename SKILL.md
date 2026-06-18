@@ -848,6 +848,66 @@ for (const [w,h] of [[1280,720],[1600,900],[1920,1080]]) {
 
 **详见 `references/layouts-corp.md` "2026-06 更新二十五" 红线 37-39**。
 
+#### 4.0.8 · headline 行内 row+wrap 的"数字脱节"陷阱 (2026-06 新增 · 更新二十六)
+
+**典型故障**: C15 卡片标题左 + 大数字徽章右(即 `.sd-headline { display:flex; flex-direction:row; flex-wrap:wrap }` + `.sd-badge { flex-shrink:0 }`), 真实数据下数字突然掉到下一行, 与标题脱节, 视觉上像"两个独立部件错位粘贴"。
+
+**根因**: row + wrap 在容器宽度不够时, 整个 badge 会被甩到下一行(因为 `flex-shrink:0` 不能压它). 临界条件简单:
+
+```
+title宽 + gap + badge宽 > headline容器宽 → wrap
+```
+
+**模板示例数据 (85 / 1) 永远踩不到这个临界, 但真实业务数据踩得到**——这是"demo 数据掩盖边界 case"的经典坑:
+
+| title 字数 | title 宽 (≈) | badge 数字位数 | badge 宽 (≈) | 总宽 | 容器 596 (1600×900) |
+|---|---|---|---|---|---|
+| 6 字 | 230 | 1-2 位 (如 85) | 110 | 340 | ✅ |
+| 6 字 | 230 | **4 位** (如 63.37) | 230 | **524** | ✅ 边缘 |
+| **8 字** (双通道高密度承接) | 310 | **4 位** (63.37) | 233 | **606** | ❌ **wrap** |
+
+**强制规则 (生成 deck 后必查)**:
+
+```js
+// playwright 内, 切到含 .qjyd-status-cards / .qjyd-status-duo 的页, 三档分辨率各跑一遍
+const wrapped = await page.evaluate(() => {
+  return Array.from(document.querySelectorAll('.qjyd-status-card, .qjyd-status-duo .sd-col')).map(card => {
+    const t = card.querySelector('.sd-title');
+    const b = card.querySelector('.sd-badge');
+    if (!t || !b) return null;
+    const tR = t.getBoundingClientRect();
+    const bR = b.getBoundingClientRect();
+    return { wrap: bR.top - tR.top > 30 };
+  }).filter(Boolean);
+});
+// 期望: 任一卡片任一分辨率 wrap 都为 false
+```
+
+**修法优先级**:
+
+1. **CSS 层兜底 (模板已默认应用, 2026-06 更新二十六)**:
+   - `.sd-headline { gap: var(--sp-7) /* 32 */ }` — 不要用 `--sp-10 (64)`, 抢回 32px 余量
+   - `.sd-title { flex: 1 1 auto; min-width: 0 }` — title 优先被压缩(变 2 行) 而不是 badge wrap
+   - `.sd-badge-num { font-size: clamp(58px, 4.8vw, 80px) }` — 上限 80, 4 位数字 badge 宽控制在 ~200px
+   - `.sd-badge { align-self: flex-end }` — wrap 触发时仍贴右下与 title 末行对齐
+2. **数据层避坑 (生成阶段就要做)**:
+   - 标题 `.sd-title` 任一行 ≤ 7 字, 整体 ≤ 2 行
+   - 数字 `.sd-badge-num` 位数 ≤ 4 (含小数点)
+   - 标题里**少用 `<br>`主动断行**——让 CSS 自然 wrap, 反而可控
+3. **彻底改版 (新版面才考虑)**:
+   - 改 column 布局: 标题在上, 数字在右下角绝对定位
+
+**数据驱动 layout 检查 (生成 deck 时要做)**:
+
+| 数据特征 | 选用版面 | 理由 |
+|---|---|---|
+| 数字 ≤ 3 位 + 标题 ≤ 7 字 | C15 status-cards 默认 row 布局 | 安全区, 视觉冲击力最大 |
+| 数字 4 位 + 标题 ≤ 7 字 | 同上, 已被 CSS 兜底覆盖 | 模板默认参数已留余量 |
+| **数字 5 位+ 或 标题 ≥ 9 字** | **改 C04 (qjyd-kpi-hero)** 单数 + bullet, **不要硬塞 C15** | C15 的 row+wrap 设计假设标题中等长度 + 数字短, 极端数据会强行触发兜底, 但视觉密度对比会塌 |
+
+**详见 `references/layouts-corp.md` "2026-06 更新二十六" 红线 40-42**。
+
+
 #### 风格 A · 电子杂志风必查
 
 1. **大标题必须是衬线字体**——如果显示成非衬线,99% 是 Step 3.0 预检没做,`h-hero` 类在 template.html 里缺失

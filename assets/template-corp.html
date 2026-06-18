@@ -2267,12 +2267,18 @@
     box-shadow:0 0 0 4px rgba(0,191,165,.12);
   }
   .qjyd-status-card .sd-headline{
+    /* 2026-06 更新二十六: gap 从 64(--sp-10) 减到 32(--sp-7), 抢回 32px 余量给 badge.
+       临界宽度判定: title宽 + gap + badge宽 ≤ headline容器宽(596 @ 1600x900). 详见红线 40. */
     display:flex; align-items:flex-end;
-    gap:var(--sp-10);
+    gap:var(--sp-7);
     flex-wrap:wrap;
   }
   .qjyd-status-card .sd-title{
-    flex:0 0 auto; min-width:0;
+    /* 2026-06 更新二十六: flex 从 0 0 auto 改为 1 1 auto, min-width 仍为 0.
+       预期行为: title 优先按内容自然宽度排; 若 title + gap + badge 仍超容器, 让 title 压缩
+       (而不是 badge 整个 wrap 到下一行——那种"标题和数字脱节"是用户实测最难看的故障).
+       title 压缩后会从 1 行变成 2 行, 但 badge 始终贴右与标题尾行对齐, 视觉仍连贯. */
+    flex:1 1 auto; min-width:0;
     font-family:var(--sans-zh);
     font-weight:700;
     font-size:clamp(30px,2.5vw,44px);
@@ -2282,14 +2288,21 @@
   }
   .qjyd-status-card.next .sd-title{ color:var(--text-1); }
   .qjyd-status-card .sd-badge{
+    /* 2026-06 更新二十六: margin-left:auto 让 badge 永远贴右, 即使 title 压缩到 2 行也仍贴右.
+       align-self:flex-end 让 wrap 触发时, badge 仍与 title 末行底端对齐 (而不是顶端).
+       flex-shrink:0 保持 badge 数字不被压扁 (压扁的数字比 wrap 还难看). */
     margin-left:auto;
-    flex-shrink:0; display:flex; flex-direction:column;
+    flex-shrink:0; align-self:flex-end;
+    display:flex; flex-direction:column;
     align-items:flex-end; gap:2px; line-height:1;
     padding-bottom:4px;
   }
   .qjyd-status-card .sd-badge-num{
+    /* 2026-06 更新二十六: clamp 上限 92→80. 92px 在 4 位数字(如 63.37)下 badge 宽 ~233px,
+       与 8 字标题(如"双通道高密度承接")共占 596 容器时必 wrap. 80px 把 badge 收到 ~200px,
+       给 4 位数字 + 8 字标题留出 ~85px 安全余量. 视觉冲击力略降, 但避免 wrap 故障. */
     font-family:var(--sans); font-weight:750;
-    font-size:clamp(58px,5.4vw,92px);
+    font-size:clamp(58px,4.8vw,80px);
     letter-spacing:-.035em; line-height:1;
   }
   .qjyd-status-card .sd-badge-unit{

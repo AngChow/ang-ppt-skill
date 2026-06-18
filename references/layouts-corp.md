@@ -1957,3 +1957,97 @@ C04 左列 `.num-side` 内三段元素的视觉重量是 `mega(216px) : 副标(3
 - "在我电脑上看效果完美"是个危险的信号 — 必须在多分辨率下验证, 至少覆盖 1280/1600/1920/2560 四档.
 - ctx-side 用 `justify-content:center` 这种"按剩余空间居中"的机制时, 内部锚点位置会随视口非线性漂移, **纯 CSS 没办法和它形成稳定的对齐关系**——必须 JS 测量。
 - CSS 自定义属性的继承链: 设在父元素 inline style 上 → 子元素通过 `var()` 引用时能读到. 但**子元素的 CSS 规则必须真的引用 `var()`**, 否则 inline 设属性是无效的 (典型陷阱: 我先前把 var() 改进 group margin 但脚本 replace 失败, debug 时一直困惑为什么 setProperty 不生效).
+
+---
+
+## 2026-06 更新二十六: C15 sd-headline 行内 row+wrap 数字脱节修复 (红线 40-42)
+
+### 现象
+
+C15 (qjyd-status-cards) 卡片的 `.sd-headline`(左标题 + 右大数字徽章), 真实业务数据下数字突然掉到下一行, 与标题脱节. 视觉效果像"两个不相关部件错误粘合"——比模板示例数据看起来差一个档次.
+
+具体复现 (2026-06-17 客服周报):
+
+- 左卡 `done`: 标题"人工 + 智齿 / 双通道高密度承接" + 数字"63.37%" → 1600x900 下 wrap
+- 右卡 `next`: 标题"客户群对话量大 / 但机器人覆盖薄" + 数字"2.04%" → 1600x900 下不 wrap
+- 模板示例 (85% / 1 项) → 任意分辨率都不 wrap, 看起来"模板自检 OK"
+
+### 根因
+
+`.sd-headline` 的旧版 CSS:
+
+```css
+.qjyd-status-card .sd-headline{
+  display:flex; align-items:flex-end;
+  gap:var(--sp-10);              /* 64px */
+  flex-wrap:wrap;                /* 关键: row 装不下时整个 badge 掉下一行 */
+}
+.qjyd-status-card .sd-title{
+  flex:0 0 auto; min-width:0;    /* 不压缩 */
+  font-size:clamp(30px,2.5vw,44px);
+}
+.qjyd-status-card .sd-badge{
+  margin-left:auto;
+  flex-shrink:0;                  /* 不压缩 */
+}
+.qjyd-status-card .sd-badge-num{
+  font-size:clamp(58px,5.4vw,92px); /* 上限 92px, 4 位数字下 badge 宽 ~233 */
+}
+```
+
+临界条件:
+
+```
+title宽 + gap(64) + badge宽 > headline容器宽(596 @ 1600x900)
+```
+
+在 1600x900 下:
+
+| 卡片 | title 字符 | title 宽 | gap | badge 数字 | badge 宽 | 总宽 | 容器 596 |
+|---|---|---|---|---|---|---|---|
+| 左 (done) | 8 字 (双通道高密度承接) | 307 | +64 | 63.37 (4位) | +233 | **604** | ❌ wrap |
+| 右 (next) | 7 字 (但机器人覆盖薄) | 269 | +64 | 2.04 (3位) | +188 | 521 | ✅ |
+
+**模板示例数据踩不到这个临界, 真实数据踩得到**——典型的"demo 数据干净掩盖边界 case".
+
+### 修复 (CSS 层兜底, 模板已默认应用)
+
+```css
+.qjyd-status-card .sd-headline{
+  display:flex; align-items:flex-end;
+  gap:var(--sp-7);                /* 64 → 32, 抢回 32px */
+  flex-wrap:wrap;
+}
+.qjyd-status-card .sd-title{
+  flex:1 1 auto; min-width:0;     /* 0 0 auto → 1 1 auto, 极端时 title 优先压缩 */
+  font-size:clamp(30px,2.5vw,44px);
+}
+.qjyd-status-card .sd-badge{
+  margin-left:auto;
+  flex-shrink:0;
+  align-self:flex-end;             /* 新增: wrap 触发时仍贴右下 */
+}
+.qjyd-status-card .sd-badge-num{
+  font-size:clamp(58px,4.8vw,80px); /* 上限 92 → 80, 4 位数字 badge ~200 */
+}
+```
+
+修复后多分辨率验证 (PPT 实战数据 63.37 + 8字标题):
+
+| 分辨率 | 修复前 wrap | 修复后 wrap |
+|---|---|---|
+| 1280x720 | ❌ true | ✅ false |
+| 1600x900 | ❌ true | ✅ false |
+| 1920x1080 | ✅ false (容器 738 够) | ✅ false |
+
+### 红线 40-42
+
+- **红线 40 (CSS 层)**: `.sd-headline gap` 不得回到 `--sp-10 (64)`; `.sd-title flex` 不得回到 `0 0 auto`; `.sd-badge-num` clamp 上限不得回到 `92px`. 这些都是为"数据多样性"留的余量, 改回去等于把陷阱埋回去.
+- **红线 41 (生成阶段)**: 生成 C15 deck 时, 标题 `.sd-title` 任一行 ≤ 7 字, 整体 ≤ 2 行; 数字 `.sd-badge-num` 位数 ≤ 4 (含小数点). 如果业务数据明显超出, 改用 C04 (qjyd-kpi-hero) 而不是硬塞 C15.
+- **红线 42 (自检脚本)**: 生成 deck 后必须跑 wrap 检测脚本, 三档分辨率 (1280/1600/1920) 下任一卡片任一分辨率 wrap=true 都视为 regression.
+
+### 经验
+
+- **demo 数据是 happy path, 真实数据是 boundary**. 模板默认示例 (85 / 1) 永远是"小标题 + 短数字", 但真实业务里**百分比常常带小数, 标题常常超过 6 字**——这才是真实分布. 模板设计时必须按"真实数据分布的上 90 分位"留余量, 而不是按 demo 数据的中位.
+- **`flex-wrap:wrap` + `flex-shrink:0` 组合是个隐性陷阱**. 它让两个孩子要么并排、要么完全分开 (整个掉下一行), 没有"渐进压缩"的中间状态. 对于"数据维度有变化"的场景 (任何带数字徽章的卡片), 至少要给一个孩子 `flex-shrink:1` 让 CSS 有兜底空间.
+- **C15 适合"标题中等 + 数字短"的对比场景, 不适合"标题长 + 数字长"的双极端**. 强行用就会触发兜底但视觉密度对比塌掉. 数据特征匹配版面, 比硬把数据塞进版面更重要.
