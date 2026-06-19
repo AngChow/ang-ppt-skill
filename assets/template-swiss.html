@@ -1617,6 +1617,16 @@ try {
 
 if(motion){
   const { animate } = motion;
+  /* [motion-flash-fix] 在 add('motion-ready') 之前, 先给当前可见 slide 的
+     [data-anim] 元素打上行内 opacity:1. 行内样式优先级高于 CSS class,
+     防止 motion-ready 的 opacity:0 在 playSlide 恢复之前造成瞬间透明. */
+  const __fixCurIdx = window.__currentSlideIndex || 0;
+  const __fixCurSlide = document.querySelectorAll('.slide')[__fixCurIdx];
+  if(__fixCurSlide){
+    __fixCurSlide.querySelectorAll('[data-anim]').forEach(el=>{
+      el.style.opacity='1'; el.style.transform='none';
+    });
+  }
   document.body.classList.add('motion-ready');
 
   /* ============================================================
@@ -1631,8 +1641,8 @@ if(motion){
 
   function resetAnims(slide){
     slide.querySelectorAll('[data-anim]').forEach(el=>{
-      el.style.opacity='';
-      el.style.transform='';
+      el.style.opacity='1';
+      el.style.transform='none';
     });
     /* 同时复位需要被 recipe 接管的元素 */
     slide.querySelectorAll('.row-fill,.tl-node,.stack-block,.bar-tower,.sub-card,.col,.vrule,.kpi-cell')
@@ -2278,9 +2288,14 @@ if(motion){
   function playSlide(i){
     const slide = slides[i];
     if(!slide) return;
+    /* [motion-flash-fix] Motion One 首次加载完成时不播放入场动画.
+       根因: recipe 内部 hide() 会把子元素设为 opacity:0 再 animate 0->1.
+       但用户此刻已在看这页, "先消失再出现" = 全局刷新感.
+       首次调用(lastIdx===-1)直接 revealStatic, 后续翻页才正常播放入场. */
+    const __isFirstPlay = (lastIdx === -1);
     lastIdx = i;
 
-    if(window.__lowPowerMode){
+    if(window.__lowPowerMode || __isFirstPlay){
       revealStatic(slide);
       return;
     }

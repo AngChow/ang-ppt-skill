@@ -1116,3 +1116,52 @@ ang-ppt-skill/
 
 > 这个附录只在"用户在 guizang 风格之外还要一份 .pptx"时才需要读;纯网页 PPT 不涉及。
 
+
+##### Motion One 异步加载导致"全局刷新感"（**2026-06 新增 · 更新二十七 · 必读**）
+
+24. **Motion One 通过 `await import()` 异步加载，加载完成时（通常在用户已翻到第 2-3 页时）会触发两层闪烁**，必须在模板中同时修复：
+
+    **第一层：`add('motion-ready')` 时 CSS `opacity:0` 瞬间生效**
+
+    Motion One 加载完成后立即执行 `document.body.classList.add('motion-ready')`，CSS 规则 `body.motion-ready [data-anim]{opacity:0}` 对所有 slide 生效。当前可见页的 `[data-anim]` 元素瞬间变透明 → 用户看到"全局刷新"。
+
+    **修复**：在 `add('motion-ready')` **之前**，先给当前可见 slide 的 `[data-anim]` 打上行内 `opacity:1`（行内样式优先级高于 CSS class）：
+
+    ```js
+    const __curIdx = window.__currentSlideIndex || 0;
+    const __curSlide = document.querySelectorAll('.slide')[__curIdx];
+    if(__curSlide){
+      __curSlide.querySelectorAll('[data-anim]').forEach(el=>{
+        el.style.opacity='1'; el.style.transform='none';
+      });
+    }
+    document.body.classList.add('motion-ready');  // ← 现在加了也不会闪
+    ```
+
+    **第二层：`playSlide()` 首次调用时 recipe `hide()` 把内容设为透明再 `animate(0→1)`**
+
+    `add('motion-ready')` 之后几百行代码执行完，`playSlide(currentIndex)` 被调用。recipe 内部 `hide(子元素)` 把元素设为 `opacity:0`，然后 `animate(el, {opacity:[0,1]})` 依次播放。用户正在看这页 → "先消失再被召唤出来" = 全局刷新感。
+
+    **修复**：利用 `lastIdx === -1` 判断这是 Motion One 加载后的**首次调用**，直接 `revealStatic()` 不播放 recipe：
+
+    ```js
+    function playSlide(i){
+      const slide = slides[i];
+      if(!slide) return;
+      const __isFirstPlay = (lastIdx === -1);
+      lastIdx = i;
+      if(window.__lowPowerMode || __isFirstPlay){
+        revealStatic(slide);
+        return;
+      }
+      // ...后续正常 recipe 逻辑...
+    }
+    ```
+
+    **第三层（辅助）：`resetAnims` 必须设 `opacity='1'` 而非 `opacity=''`**
+
+    `resetAnims` 里 `el.style.opacity=''` 会清空行内样式，CSS 默认 `opacity:0` 会立即接管造成中间 0 帧。必须直接设 `el.style.opacity='1'`（与红线 6 一致，三个模板已统一修复）。
+
+    **自检方法**：生成 deck 后打开浏览器，**快速翻到第 2-3 页并停留**，等待 1-2 秒（Motion One 加载完成）。如果页面内容闪了一下（先消失再出现），说明修复未生效。正常表现：内容始终可见，Motion One 加载完成后无视觉变化。
+
+    **三个模板（template.html / template-swiss.html / template-corp.html）均已修复，不要回退**。生成新 deck 时 `cp` 模板即可，修复会自动继承。
