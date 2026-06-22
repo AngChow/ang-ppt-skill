@@ -552,7 +552,7 @@ cp "<SKILL_ROOT>/assets/template-corp.html" "项目/XXX/ppt/index.html"
 | 议程 4-6 行 | C03 Agenda |
 | 章节切分 | C02 Chapter / C01 Cover / C13 Thank You |
 
-**C05 KPI Triple 生成规则（qjyd-corp）**：数字型 KPI 保持默认单行 `.kpi-num` + `.kpi-sfx`（如 `70%`、`15家`）；概念型 KPI（如 `AI/中台`、`HMOS/升级`、`移动端/底盘`）使用 `.kpi-num.kpi-num-stack` + `.kpi-main` / `.kpi-sfx` 显式两行。只要同一页任一项需要两行，三项都必须统一使用 stack，禁止依赖自然换行造成 label 基线错位。
+**C05 KPI Triple 生成规则（qjyd-corp）**：数字型 KPI 保持默认单行 `.kpi-num` + `.kpi-sfx`（如 `70%`、`15家`），模板已加 `white-space:nowrap` 防止数字与中文单位之间换行，单位 `vertical-align:baseline` 底部锚定；概念型 KPI（如 `AI/中台`、`HMOS/升级`、`移动端/底盘`）使用 `.kpi-num.kpi-num-stack` + `.kpi-main` / `.kpi-sfx` 显式两行。只要同一页任一项需要两行，三项都必须统一使用 stack，禁止依赖自然换行造成 label 基线错位（详见 layouts-corp.md 更新二十七 · 红线 43-45）。
 
 
 **风格 C 选版式的常见误区**：

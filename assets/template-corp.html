@@ -1661,12 +1661,13 @@
   }
   .qjyd-kpi-triple .kpi-num{
     font-family:var(--sans); font-weight:800;
-    font-size:clamp(72px, 7.2vw, 132px); line-height:1; letter-spacing:-.03em;
+    font-size:clamp(64px, 6.4vw, 112px); line-height:1; letter-spacing:-.03em;
+    white-space:nowrap;
     color:var(--accent-dark);
   }
   .qjyd-kpi-triple .kpi-cell.accent .kpi-num{ color:#fff; }
   .qjyd-kpi-triple .kpi-num .kpi-sfx{
-    font-size:.4em; vertical-align:.55em; margin-left:.06em; font-weight:600; opacity:.85;
+    font-size:.4em; vertical-align:baseline; margin-left:.24em; font-weight:600; opacity:.85;
   }
   .qjyd-kpi-triple .kpi-num.kpi-num-stack{
     /* 概念型 KPI 通常是两行文字, 比数字型 KPI 略降一档, 避免压迫卡片留白 */
@@ -1683,7 +1684,9 @@
   }
   .qjyd-kpi-triple .kpi-label{
     font-family:var(--sans-zh); font-weight:600; font-size:22px; color:var(--ink);
-    margin-top:var(--sp-2);
+    margin-top:var(--sp-4);
+    min-height:2.6em;
+    display:flex; align-items:flex-end;
   }
   .qjyd-kpi-triple .kpi-cell.accent .kpi-label{ color:#fff; }
   .qjyd-kpi-triple .kpi-desc{
@@ -1753,7 +1756,9 @@
     /* 2026-06 更新十一: 13px 固定 → clamp, 1600 宽下 ~17px */
     font-size:clamp(15px, 1.1vw, 18px);
     line-height:1.55;
-    margin-top:var(--sp-2);       /* title 与 desc 之间 4px 显式分隔 */
+    margin-top:var(--sp-4);
+    min-height:2.6em;
+    display:flex; align-items:flex-end;       /* title 与 desc 之间 4px 显式分隔 */
   }
 
   /* ========== C07 · 4 卡片 2x2 ========== */
