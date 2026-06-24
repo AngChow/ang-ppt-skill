@@ -961,12 +961,11 @@ open "项目/XXX/ppt/index.html"
 
 ### Step 7 · 交付分发版（生成完成后必做）
 
-deck 收尾后,**必须主动问一次用户是否需要分发版**——本 skill 的产物默认仍是项目目录(`index.html` + `images/` + `assets/motion.min.js`),分发到 IM/邮件时容易缺资源。
+deck 收尾后,**必须主动问一次用户是否需要分发版**——本 skill 的产物默认仍是项目目录(`index.html` + `images/`),分发到 IM/邮件时容易缺资源。
 
 **为什么这是流程的一环,不是可选 tip**:单发 `index.html` 几乎一定会触发以下两类问题:
 
 1. `./images/logo.png` 等本地图片 → 封面 logo 破图
-2. `./assets/motion.min.js` 加载失败 → 翻页入场动画消失,变成"白板秒切"
 3. (Lucide CDN 通常对方有网就 OK,但断网演示会图标变方块)
 
 而用户往往要等发出去之后才发现这些问题。
@@ -1001,7 +1000,6 @@ ang-ppt-skill/
 │   ├── qjyd-corp/            ← 风格 C 专属资产
 │   │   └── xrxs-logo.png     ← 默认产品 logo（薪人薪事，封面/Thank You 默认用这个）
 │   ├── screenshot-backgrounds/ ← 截图美化内置背景(WebP):style-a 5 套 / style-b 4 套
-│   └── motion.min.js         ← Motion One 本地副本（离线兜底,约 64KB,三套模板共用,统一加载路径 ./assets/motion.min.js）
 ├── scripts/
 │   └── validate-swiss-deck.mjs ← 风格 B 静态校验:登记版式、图片槽位、SVG 文本、标题对齐
 └── references/
@@ -1037,7 +1035,7 @@ ang-ppt-skill/
 7. 细节调整时读 `components.md` 查组件(含 Motion 动效系统章节,主要服务风格 A;风格 B 的组件细节在 `layouts-swiss.md` 附录)
 8. 生成后先运行 `node scripts/validate-swiss-deck.mjs path/to/index.html`,再读 `checklist.md` 自检
 
-**动效相关**:模板已把 Motion One 的加载和 recipe 逻辑内嵌到底部 module script。你不需要改 JS,只需要按 `layouts.md` / `layouts-swiss.md` 的骨架在 HTML 里加 `data-anim` / `data-animate` 即可。离线演示靠 `assets/motion.min.js`,断网时自动降级为"无动画但内容可读"。风格 B 模板必须保留 `B` 键低功耗模式:切换后停止 WebGL/ASCII canvas RAF,取消正在运行的 Web Animations,并把当前页内容直接 reveal 到静态最终态。
+**动效相关**:模板已把 Motion One (约 64KB) 以 IIFE 格式内联到 `<script>` 标签中,不再依赖 `import()` 加载外部文件——这解决了 `file://` 协议下 ES module 动态 `import()` 被 CORS 阻止导致动画失效的问题。你不需要改 JS,只需要按 `layouts.md` / `layouts-swiss.md` / `layouts-corp.md` 的骨架在 HTML 里加 `data-anim` / `data-animate` 即可。风格 B 模板必须保留 `B` 键低功耗模式:切换后停止 WebGL/ASCII canvas RAF,取消正在运行的 Web Animations,并把当前页内容直接 reveal 到静态最终态。
 
 ## 核心设计原则（哲学）
 

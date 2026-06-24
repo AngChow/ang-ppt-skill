@@ -319,9 +319,10 @@ ang-ppt-skill/
 │   ├── qjyd-corp/            ← Style C dedicated assets
 │   │   ├── xrxs-logo.png     ← default product logo (Xinrenxinshi; used on cover / Thank You by default)
 │   │   └── c08-xinling.jpg   ← C08 demo image (template sample only; do not copy into generated projects)
-│   ├── motion.min.js         ← local copy of Motion One (offline fallback, shared by all 3 styles)
+│   ├── motion.min.js         ← Motion One source (inlined into templates via inline-motion.mjs)
 │   └── screenshot-backgrounds/ ← bundled WebP screenshot backgrounds: 5 style-a / 4 style-b
 ├── scripts/
+│   ├── inline-motion.mjs     ← inlines motion.min.js into template HTML files
 │   └── validate-swiss-deck.mjs ← Swiss layout validator (qjyd-corp reuses it; only checks data-layout)
 └── references/
     ├── components.md     ← component catalog (type, color, grid, icons, callout, stat, pipeline)

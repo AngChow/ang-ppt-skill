@@ -320,9 +320,10 @@ ang-ppt-skill/
 │   ├── qjyd-corp/            ← Style C 专属资产
 │   │   ├── xrxs-logo.png     ← 默认产品 logo(薪人薪事，封面/Thank You 默认用这个)
 │   │   └── c08-xinling.jpg   ← C08 模板演示图(只是模板样本，不要复制到生成项目)
-│   ├── motion.min.js         ← Motion One 本地副本(离线兜底，3 套风格共享)
+│   ├── motion.min.js         ← Motion One 源文件(经 inline-motion.mjs 内联到各模板)
 │   └── screenshot-backgrounds/ ← 截图美化内置背景(WebP)：style-a 5 套 / style-b 4 套
 ├── scripts/
+│   ├── inline-motion.mjs     ← 将 motion.min.js 内联到模板 HTML 的工具脚本
 │   └── validate-swiss-deck.mjs ← 瑞士风版式校验器(qjyd-corp 沿用，只校验 data-layout)
 └── references/
     ├── components.md     ← 组件手册(字体、色、网格、图标、callout、stat、pipeline)
